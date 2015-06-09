@@ -1,6 +1,7 @@
 package com.Luguan.Mroff;
 
 import com.Luguan.Mroff.screen.GameScreen;
+import com.Luguan.Mroff.screen.LoadingScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -22,23 +23,19 @@ public class Mroff extends Game {
 
 	public Mroff() {
 		instance = this;
-
-
-
 	}
 
 	private AssetManager assetManager;
-	private boolean isLoading;
+	private boolean isLoading = true;
 
 	@Override
 	public void create () {
 		loadAssets();
-		setScreen(new GameScreen());
+		setScreen(new LoadingScreen());
 	}
 
 	private void loadAssets() {
-		List<String> textures = new ArrayList<String>(Arrays.asList(new String[]{"Body","tiles/dirt","tiles/sky",
-				"tiles/grass","tiles/cannon","tiles/stone","tiles/green flag","tiles/red flag"}));
+		List<String> textures = new ArrayList<String>(Arrays.asList(new String[]{"Body"}));
 
 		assetManager = new AssetManager();
 
@@ -46,24 +43,27 @@ public class Mroff extends Game {
 			assetManager.load("textures/" + texture + ".png", Texture.class);
 		}
 
-		assetManager.load("audio/axeSwing.mp3", Sound.class);
+		//assetManager.load("audio/axeSwing.mp3", Sound.class);
 
 		// only needed once
 		assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 		assetManager.load("maps/Level1.tmx", TiledMap.class);
-
-		// once the asset manager is done loading
-		TiledMap map = assetManager.get("maps/Level1.tmx");
 	}
 
 	@Override
 	public void render() {
 		if(isLoading) {
 			if (assetManager.update()) {
+				setScreen(new GameScreen());
 				isLoading = false;
 			}
 		}
 		super.render();
+	}
+
+	public TiledMap getMap(String mapName) {
+		return assetManager.get("maps/" + mapName + ".tmx", TiledMap.class);
+
 	}
 
 	public Texture getTexture(String texture) {
