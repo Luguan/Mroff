@@ -7,15 +7,11 @@ shortHash() {
     git rev-parse --short HEAD
 }
 
-isoDate() {
-    date +%Y%m%dT%H%M%S
-}
-
 fileName() {
-    echo project-shitstorm-reloaded-$(isoDate)-$(shortHash).jar
+    echo mroff-$(shortHash).jar
 }
 
 ./gradlew desktop:dist
 mkdir release
 mv ${source} release/$(fileName)
-./gh-release create Luguan/Mroff ${version}-$(isoDate)
+./gh-release create Luguan/Mroff mroff-${version}
