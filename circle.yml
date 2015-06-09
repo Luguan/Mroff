@@ -1,0 +1,9 @@
+dependencies:
+  pre:
+    - wget https://github.com/progrium/gh-release/releases/download/v2.2.0/gh-release_2.2.0_linux_x86_64.tgz
+    - tar -xzf gh-release_2.2.0_linux_x86_64.tgz
+deployment:
+  master:
+    branch: master
+    commands:
+      - ./deploy.sh
