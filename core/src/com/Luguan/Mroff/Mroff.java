@@ -1,27 +1,63 @@
 package com.Luguan.Mroff;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.Luguan.Mroff.screen.GameScreen;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Mroff extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Mroff extends Game {
+
+	private static Mroff instance;
+	public static Mroff getInstance() {
+		return instance;
+	}
+
+	public Mroff() {
+		instance = this;
+	}
+
+	private AssetManager assetManager;
+	private boolean isLoading;
+
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		loadAssets();
+		setScreen(new GameScreen());
+	}
+
+	private void loadAssets() {
+		List<String> textures = new ArrayList<String>(Arrays.asList(new String[]{"Body","tiles/dirt","tiles/sky",
+				"tiles/grass","tiles/cannon","tiles/stone","tiles/green flag","tiles/red flag"}));
+
+		assetManager = new AssetManager();
+
+		for(String texture : textures) {
+			assetManager.load("textures/" + texture + ".png", Texture.class);
+		}
+
+		assetManager.load("audio/axeSwing.mp3", Sound.class);
 	}
 
 	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+	public void render() {
+		if(isLoading) {
+			if (assetManager.update()) {
+				isLoading = false;
+			}
+		}
+		super.render();
+	}
+
+	public Texture getTexture(String texture) {
+		return assetManager.get("textures/" + texture + ".png", Texture.class);
+	}
+
+	public void playSound(String file) {
+		assetManager.get("audio/" + file + ".mp3", Sound.class).play();
 	}
 }
