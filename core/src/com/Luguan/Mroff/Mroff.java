@@ -3,8 +3,11 @@ package com.Luguan.Mroff;
 import com.Luguan.Mroff.screen.GameScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +22,9 @@ public class Mroff extends Game {
 
 	public Mroff() {
 		instance = this;
+
+
+
 	}
 
 	private AssetManager assetManager;
@@ -41,6 +47,13 @@ public class Mroff extends Game {
 		}
 
 		assetManager.load("audio/axeSwing.mp3", Sound.class);
+
+		// only needed once
+		assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+		assetManager.load("maps/Level1.tmx", TiledMap.class);
+
+		// once the asset manager is done loading
+		TiledMap map = assetManager.get("maps/Level1.tmx");
 	}
 
 	@Override
