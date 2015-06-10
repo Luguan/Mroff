@@ -2,12 +2,18 @@ package com.Luguan.Mroff.screen;
 
 import com.Luguan.Mroff.Mroff;
 import com.Luguan.Mroff.character.Character;
+import com.Luguan.Mroff.util.Utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import sun.plugin.javascript.navig4.Layer;
 
 
 /**
@@ -22,7 +28,7 @@ public class GameScreen extends ScreenAdapter{
     public GameScreen(){
         Mroff.getInstance().getMap("Level1");
 
-        character = new Character();
+        spawnCharacter();
 
         cam = createCam();
 
@@ -36,27 +42,24 @@ public class GameScreen extends ScreenAdapter{
     }
 
     private void update(float delta) {
-
         character.Draw(renderer.getBatch());
+        character.Update(delta);
 
-        if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-            cam.translate(-1,0,0);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-            cam.translate(1,0,0);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.S)) {
-            cam.translate(0,-1,0);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-            cam.translate(0,1,0);
-        }
+        moveCamera();
+    }
+
+    private void moveCamera() {
+        cam.position.set(Utils.moveTowards(character.getPosition(), new Vector2(cam.position.x,cam.position.y)),0);
+    }
+
+    private void spawnCharacter() {
+        character = new Character();
     }
 
     @Override
     public void render(float delta) {
 
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         cam.update();
@@ -65,7 +68,6 @@ public class GameScreen extends ScreenAdapter{
         renderer.render();
 
         update(delta);
-
     }
 
     @Override
