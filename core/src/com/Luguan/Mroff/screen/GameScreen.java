@@ -22,7 +22,7 @@ public class GameScreen extends ScreenAdapter{
 
         cam = createCam();
 
-        float unitScale = 1 / 16f;
+        float unitScale = 1 / 7.5f;
         renderer = new OrthogonalTiledMapRenderer(Mroff.getInstance().getMap("Level1"), unitScale);
     }
 
