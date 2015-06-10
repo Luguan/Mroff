@@ -1,6 +1,7 @@
 package com.Luguan.Mroff.screen;
 
 import com.Luguan.Mroff.Mroff;
+import com.Luguan.Mroff.character.Character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -15,10 +16,13 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 public class GameScreen extends ScreenAdapter{
     OrthogonalTiledMapRenderer renderer;
 
+    Character character;
     private final OrthographicCamera cam;
 
     public GameScreen(){
         Mroff.getInstance().getMap("Level1");
+
+        character = new Character();
 
         cam = createCam();
 
@@ -32,6 +36,9 @@ public class GameScreen extends ScreenAdapter{
     }
 
     private void update(float delta) {
+
+        character.Draw(renderer.getBatch());
+
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
             cam.translate(-1,0,0);
         }
@@ -52,12 +59,12 @@ public class GameScreen extends ScreenAdapter{
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        update(delta);
-
         cam.update();
 
         renderer.setView(cam);
         renderer.render();
+
+        update(delta);
 
     }
 
