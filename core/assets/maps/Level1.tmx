@@ -17,6 +17,9 @@
    <image width="10" height="10" source="../textures/tiles/green-flag.png"/>
   </tile>
   <tile id="4">
+   <properties>
+    <property name="End" value="1"/>
+   </properties>
    <image width="10" height="10" source="../textures/tiles/red-flag.png"/>
   </tile>
   <tile id="5">

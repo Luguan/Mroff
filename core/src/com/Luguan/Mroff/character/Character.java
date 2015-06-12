@@ -13,10 +13,9 @@ import com.badlogic.gdx.math.Vector2;
 public class Character {
 
     Sprite character;
-
     public Character() {
         character = new Sprite(Mroff.getInstance().getTexture("Body"));
-        character.setScale((1.0f / 7.5f) * 2);
+        character.setSize(3,4);
     }
 
     public void Draw(Batch batch) {
@@ -37,6 +36,7 @@ public class Character {
     public Vector2 getPosition() {
         return new Vector2(character.getX(),character.getY());
     }
+
     public void setPosition(float x, float y) {
         character.setPosition(x, y);
     }
