@@ -27,13 +27,10 @@ public class MenuScreen extends CenteredMenu {
 
 	@Override
 	public void buttonClick(String button) {
-		switch (button) {
-			case "New Game":
-				action.newGame();
-				break;
-			case "Full Screen":
-				Gdx.graphics.setDisplayMode(Gdx.graphics.getDisplayModes()[0]);
-				break;
+		if (button.equals("New Game")) {
+			action.newGame();
+		} else if (button.equals("Full Screen")) {
+			Gdx.graphics.setDisplayMode(Gdx.graphics.getDisplayModes()[0]);
 		}
 	}
 }
