@@ -2,6 +2,7 @@ package com.Luguan.Mroff;
 
 import com.Luguan.Mroff.screen.GameScreen;
 import com.Luguan.Mroff.screen.LoadingScreen;
+import com.Luguan.Mroff.screen.MenuScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -9,27 +10,28 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Mroff extends Game {
+public class Mroff extends Game implements MenuScreen.MenuAction {
 
 	private static Mroff instance;
-	public static Mroff getInstance() {
-		return instance;
-	}
+	private AssetManager assetManager;
+	private boolean isLoading = true;
 
 	public Mroff() {
 		instance = this;
 	}
 
-	private AssetManager assetManager;
-	private boolean isLoading = true;
+	public static Mroff getInstance() {
+		return instance;
+	}
 
 	@Override
-	public void create () {
+	public void create() {
 		loadAssets();
 		setScreen(new LoadingScreen());
 	}
@@ -39,11 +41,12 @@ public class Mroff extends Game {
 
 		assetManager = new AssetManager();
 
-		for(String texture : textures) {
+		for (String texture : textures) {
 			assetManager.load("textures/" + texture + ".png", Texture.class);
 		}
 
 		//assetManager.load("audio/axeSwing.mp3", Sound.class);
+		assetManager.load("skins/uiskin.json", Skin.class);
 
 		// only needed once
 		assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
@@ -52,9 +55,9 @@ public class Mroff extends Game {
 
 	@Override
 	public void render() {
-		if(isLoading) {
+		if (isLoading) {
 			if (assetManager.update()) {
-				setScreen(new GameScreen());
+				setScreen(new MenuScreen(this));
 				isLoading = false;
 			}
 		}
@@ -70,7 +73,16 @@ public class Mroff extends Game {
 		return assetManager.get("textures/" + texture + ".png", Texture.class);
 	}
 
+	public Skin getSkin() {
+		return assetManager.get("skins/uiskin.json");
+	}
+
 	public void playSound(String file) {
 		assetManager.get("audio/" + file + ".mp3", Sound.class).play();
+	}
+
+	@Override
+	public void newGame() {
+		setScreen(new GameScreen());
 	}
 }
