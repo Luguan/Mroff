@@ -9,17 +9,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MenuScreen extends ScreenAdapter {
 
 	private final Stage stage;
 	private final Skin skin;
 	private MenuAction action;
+	private Group grp;
 
 	public MenuScreen(final MenuAction action) {
 		this.action = action;
 
-		stage = new Stage();
+		stage = new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(stage);
 		skin = Mroff.getInstance().getSkin();
 
@@ -28,7 +30,7 @@ public class MenuScreen extends ScreenAdapter {
 	}
 
 	private Group createMainMenu() {
-		Group grp = new Group();
+		grp = new Group();
 
 		Button bttn = createButton("New Game", 0);
 		bttn.addListener(new EventListener() {
@@ -71,9 +73,7 @@ public class MenuScreen extends ScreenAdapter {
 			}
 		});
 		grp.addActor(bttn);
-
-		grp.setX(Gdx.graphics.getWidth() / 2);
-		grp.setY(Gdx.graphics.getHeight() / 2 - (bttn.getY() - bttn.getHeight() * .5f) / 2);
+		grp.setHeight(bttn.getY());
 		return grp;
 	}
 
@@ -82,6 +82,16 @@ public class MenuScreen extends ScreenAdapter {
 
 		button.setPosition(0, y, Align.center);
 		return button;
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		stage.getViewport().update(width, height, true);
+
+		grp.setY(Gdx.graphics.getHeight() / 2 - grp.getHeight() / 2);
+		grp.setX(Gdx.graphics.getWidth() / 2);
+
+		super.resize(width, height);
 	}
 
 	@Override
