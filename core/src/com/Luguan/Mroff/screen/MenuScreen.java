@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import javafx.scene.input.InputMethodTextRun;
 
 public class MenuScreen extends ScreenAdapter {
 
@@ -39,9 +40,11 @@ public class MenuScreen extends ScreenAdapter {
 					InputEvent inputEvent = (InputEvent) event;
 					if (inputEvent.getType() == InputEvent.Type.touchUp && !inputEvent.isTouchFocusCancel()) {
 						action.newGame();
+						return true;
 					}
 				}
 				return true;
+
 			}
 		});
 		grp.addActor(bttn);
@@ -53,6 +56,22 @@ public class MenuScreen extends ScreenAdapter {
 		grp.addActor(bttn);
 
 		bttn = createButton("Load custom map", bttn.getY() - bttn.getHeight() * .5f);
+		grp.addActor(bttn);
+
+		bttn = createButton("Full Screen", bttn.getY() - bttn.getHeight() * .5f);
+		bttn.addListener(new EventListener() {
+			@Override
+			public boolean handle(Event event) {
+				if (event instanceof InputEvent) {
+					InputEvent inputEvent = (InputEvent) event;
+					if (inputEvent.getType() == InputEvent.Type.touchUp && !inputEvent.isTouchFocusCancel()) {
+						Gdx.graphics.setDisplayMode(Gdx.graphics.getDisplayModes()[0]);
+						return true;
+					}
+				}
+				return true;
+			}
+		});
 		grp.addActor(bttn);
 
 		grp.setX(Gdx.graphics.getWidth() / 2);
