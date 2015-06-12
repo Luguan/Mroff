@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 export desktopJar='./desktop/build/libs/desktop-1.0.jar'
-export htmlFolder='./html/build/dist'
+export htmlFolder='~/Mroff/html/build/dist/*'
 export version='0.1-pre'
 
 shortHash() {
@@ -26,14 +26,13 @@ createDesktopDist() {
 createWebDist() {
     git config user.name "Circle CI"
     git config user.email hk.henrik+circle@gmail.com
-    git remote add origin git@github.com:Ineentho/blog.git
 
     ./gradlew html:dist
     git clone git@github.com:Luguan/Mroff.git --branch gh-pages --single-branch gh-pages
     mkidr game
     cd game
-    rm -rf .
-    mv ../../${htmlFolder} .
+    rm -rf ./*
+    mv ${htmlFolder} .
     git add -A
     git commit -m "Build #$(commitCount)"
     git push
