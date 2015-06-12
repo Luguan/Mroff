@@ -17,6 +17,9 @@
    <image width="10" height="10" source="../textures/tiles/green-flag.png"/>
   </tile>
   <tile id="4">
+   <properties>
+    <property name="End" value="1"/>
+   </properties>
    <image width="10" height="10" source="../textures/tiles/red-flag.png"/>
   </tile>
   <tile id="5">
@@ -28,7 +31,7 @@
  </tileset>
  <layer name="Tile Layer 1" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt0bENwzAAA0HBiaP9N/YIaSToAV9xPcGfY4xJyo8EPVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjRY8WPVre3OMObFjV43tg62eD0/+v6rHjm3+uDU7/v6rHjm9OOd1gRQ/0eAM9WvRo0aNFjxY9WvRo0aNFjxY9WvRo0aNFjxY9WvRo0aNFjxY9WvRo0aNFjxY9WvRo0aNFjxY9WvRo0aNFjxY9WvRo0aNFjxY9WvRo0aNFjxY9WvRo0aNFjxY9WvRo0aNFjxY9WvRo0aNFjxY9WvRo0aNFjxY9WvRo0aNFjxY9WvRomeQ8Yd7qNA==
+   eJzt2DkOwzAMAEE7l/7/4zSpUwQSNHC2mJ7kQo3GcRwjlFcI9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw7Kjxwnsrep9WOphqYelHpZ6WOphqYelHpZ6WOphuUKPX/9fnsDss3o8Nsx6X2D3/Wf1+Lbj+TH7drcFdt9/Vo8Vt9lld4MZPVKPf1APSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0s9bDUw1IPSz0sI5w3kWzqJg==
   </data>
  </layer>
 </map>

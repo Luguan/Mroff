@@ -30,7 +30,7 @@ public class GameScreen extends ScreenAdapter{
 
         cam = createCam();
 
-        float unitScale = 1 / 7.5f;
+        float unitScale = 1 / 10f;
         renderer = new OrthogonalTiledMapRenderer(Mroff.getInstance().getMap("Level1"), unitScale);
 
         spawnCharacter();
@@ -64,8 +64,9 @@ public class GameScreen extends ScreenAdapter{
                 for(int x =0; x <tileLayer.getWidth() - 1; x++) {
                     TiledMapTileLayer.Cell cell = tileLayer.getCell(x, y);
                     TiledMapTile tile = cell.getTile();
+
                     if(tile.getProperties().containsKey("Start")) {
-                         character.setPosition((float)x+1,(float)y+16);
+                         character.setPosition((float)x,(float)y);
                     }
                 }
             }
