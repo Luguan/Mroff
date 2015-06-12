@@ -11,6 +11,9 @@
    <image width="10" height="10" source="../textures/tiles/grass.png"/>
   </tile>
   <tile id="3">
+   <properties>
+    <property name="Start" value="1"/>
+   </properties>
    <image width="10" height="10" source="../textures/tiles/green-flag.png"/>
   </tile>
   <tile id="4">
