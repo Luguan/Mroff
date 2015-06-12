@@ -29,7 +29,7 @@ createWebDist() {
 
     ./gradlew html:dist
     git clone git@github.com:Luguan/Mroff.git --branch gh-pages --single-branch gh-pages
-    mkidr game
+    mkdir game
     cd game
     rm -rf ./*
     mv ${htmlFolder} .
