@@ -1,7 +1,7 @@
 package com.Luguan.Mroff.screen;
 
 import com.Luguan.Mroff.Mroff;
-import com.Luguan.Mroff.character.Character;
+import com.Luguan.Mroff.livingentity.Player;
 import com.Luguan.Mroff.util.Utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -21,7 +21,7 @@ import com.badlogic.gdx.math.Vector2;
 public class GameScreen extends ScreenAdapter{
     OrthogonalTiledMapRenderer renderer;
 
-    Character character;
+    Player character;
     private final OrthographicCamera cam;
     private final TiledMap level1;
 
@@ -53,20 +53,23 @@ public class GameScreen extends ScreenAdapter{
     }
 
     private void spawnCharacter() {
-        character = new Character();
+        character = new Player();
 
         MapLayers layers = level1.getLayers();
 
-        for (MapLayer layer : layers) {
+        for(MapLayer layer: layers) {
+
             TiledMapTileLayer tileLayer = (TiledMapTileLayer)layer;
 
-            for(int y = 0; y <tileLayer.getHeight() - 1; y++) {
-                for(int x =0; x <tileLayer.getWidth() - 1; x++) {
+            for (int y = 0; y < tileLayer.getHeight() - 1; y++) {
+                for (int x = 0; x < tileLayer.getWidth() - 1; x++) {
                     TiledMapTileLayer.Cell cell = tileLayer.getCell(x, y);
-                    TiledMapTile tile = cell.getTile();
+                    if (cell != null) {
+                        TiledMapTile tile = cell.getTile();
 
-                    if(tile.getProperties().containsKey("Start")) {
-                         character.setPosition((float)x,(float)y);
+                        if (tile.getProperties().containsKey("Start")) {
+                            character.setPosition((float) x, (float) y);
+                        }
                     }
                 }
             }
