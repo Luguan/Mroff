@@ -1,86 +1,36 @@
 package com.Luguan.Mroff.screen;
 
-import com.Luguan.Mroff.Mroff;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Align;
 
-public class MenuScreen extends ScreenAdapter {
+import java.util.ArrayList;
+import java.util.List;
 
-	private final Stage stage;
-	private final Skin skin;
+public class MenuScreen extends CenteredMenu {
+
 	private MenuAction action;
 
-	public MenuScreen(final MenuAction action) {
+	public MenuScreen(MenuAction action) {
 		this.action = action;
-
-		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
-		skin = Mroff.getInstance().getSkin();
-
-		Group grp = createMainMenu();
-		stage.addActor(grp);
-	}
-
-	private Group createMainMenu() {
-		Group grp = new Group();
-
-		Button bttn = createButton("New Game", 0);
-		bttn.addListener(new EventListener() {
-			@Override
-			public boolean handle(Event event) {
-				if (event instanceof InputEvent) {
-					InputEvent inputEvent = (InputEvent) event;
-					if (inputEvent.getType() == InputEvent.Type.touchUp && !inputEvent.isTouchFocusCancel()) {
-						action.newGame();
-					}
-				}
-				return true;
-			}
-		});
-		grp.addActor(bttn);
-
-		bttn = createButton("Load Game", bttn.getY() - bttn.getHeight() * .5f);
-		grp.addActor(bttn);
-
-		bttn = createButton("Settings", bttn.getY() - bttn.getHeight() * .5f);
-		grp.addActor(bttn);
-
-		bttn = createButton("Load custom map", bttn.getY() - bttn.getHeight() * .5f);
-		grp.addActor(bttn);
-
-		grp.setX(Gdx.graphics.getWidth() / 2);
-		grp.setY(Gdx.graphics.getHeight() / 2 - (bttn.getY() - bttn.getHeight() * .5f) / 2);
-		return grp;
-	}
-
-	private Button createButton(String label, float y) {
-		TextButton button = new TextButton(label, skin);
-
-		button.setPosition(0, y, Align.center);
-		return button;
 	}
 
 	@Override
-	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		stage.act();
-		stage.draw();
+	protected List<Button> getButtons() {
+		List<Button> bttns = new ArrayList<Button>();
+		bttns.add(createButton("New Game"));
+		bttns.add(createButton("Load Game"));
+		bttns.add(createButton("Settings"));
+		bttns.add(createButton("Load custom map"));
+		bttns.add(createButton("Full Screen"));
+		return bttns;
 	}
 
 	@Override
-	public void dispose() {
-		stage.dispose();
-	}
-
-	public interface MenuAction {
-		void newGame();
+	public void buttonClick(String button) {
+		if (button.equals("New Game")) {
+			action.newGame();
+		} else if (button.equals("Full Screen")) {
+			Gdx.graphics.setDisplayMode(Gdx.graphics.getDisplayModes()[0]);
+		}
 	}
 }
