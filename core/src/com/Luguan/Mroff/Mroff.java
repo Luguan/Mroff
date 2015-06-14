@@ -83,6 +83,7 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
 
 	@Override
 	public void newGame() {
+		getScreen().dispose();
 		setScreen(new GameScreen());
 	}
 }

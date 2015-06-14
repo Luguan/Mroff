@@ -91,6 +91,7 @@ public abstract class CenteredMenu extends ScreenAdapter {
 	@Override
 	public void dispose() {
 		stage.dispose();
+		Gdx.input.setInputProcessor(null);
 	}
 
 
