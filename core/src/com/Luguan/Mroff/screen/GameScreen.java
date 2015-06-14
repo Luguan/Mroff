@@ -4,6 +4,7 @@ import com.Luguan.Mroff.Mroff;
 import com.Luguan.Mroff.livingentity.Player;
 import com.Luguan.Mroff.util.Utils;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,35 +19,43 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Lukas on 6/9/2015.
  */
-public class GameScreen extends ScreenAdapter{
-    OrthogonalTiledMapRenderer renderer;
-
-    Player character;
+public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMenuAction {
     private final OrthographicCamera cam;
     private final TiledMap level1;
+    OrthogonalTiledMapRenderer renderer;
+    ScreenAdapter pauseMenu;
+    Player character;
 
     public static final float TILE_SCALE = 1/10f;
 
     public GameScreen(){
         level1 = Mroff.getInstance().getMap("Level1");
 
-        cam = createCam();
+        cam = new OrthographicCamera();
 
         renderer = new OrthogonalTiledMapRenderer(Mroff.getInstance().getMap("Level1"), TILE_SCALE);
 
         spawnCharacter();
     }
 
-    private OrthographicCamera createCam() {
-        OrthographicCamera cam = new OrthographicCamera();
-        return cam;
-    }
-
     private void update(float delta) {
-        character.draw(renderer.getBatch());
+        if (isPaused()) {
+            // If the game is paused, don't update
+            return;
+        }
+
         character.update(delta);
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            pauseMenu = new PauseMenuScreen(this);
+            pauseMenu.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
+
         moveCamera();
+    }
+
+    private boolean isPaused() {
+        return pauseMenu != null;
     }
 
     private void moveCamera() {
@@ -87,6 +96,12 @@ public class GameScreen extends ScreenAdapter{
         renderer.setView(cam);
         renderer.render();
 
+        character.draw(renderer.getBatch());
+
+        if (pauseMenu != null) {
+            pauseMenu.render(delta);
+        }
+
         update(delta);
     }
 
@@ -96,5 +111,21 @@ public class GameScreen extends ScreenAdapter{
         cam.viewportWidth = scale * width;
         cam.viewportHeight = scale * height;
         cam.update();
+    }
+
+    @Override
+    public void dispose() {
+        pauseMenu.dispose();
+    }
+
+    @Override
+    public void menuResume() {
+        pauseMenu.dispose();
+        pauseMenu = null;
+    }
+
+    @Override
+    public void menuReturnToMainMenu() {
+        Mroff.getInstance().openMainMenu();
     }
 }
