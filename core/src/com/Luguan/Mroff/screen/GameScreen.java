@@ -25,13 +25,14 @@ public class GameScreen extends ScreenAdapter{
     private final OrthographicCamera cam;
     private final TiledMap level1;
 
+    public static final float TILE_SCALE = 1/10f;
+
     public GameScreen(){
         level1 = Mroff.getInstance().getMap("Level1");
 
         cam = createCam();
 
-        float unitScale = 1 / 10f;
-        renderer = new OrthogonalTiledMapRenderer(Mroff.getInstance().getMap("Level1"), unitScale);
+        renderer = new OrthogonalTiledMapRenderer(Mroff.getInstance().getMap("Level1"), TILE_SCALE);
 
         spawnCharacter();
     }
@@ -42,8 +43,8 @@ public class GameScreen extends ScreenAdapter{
     }
 
     private void update(float delta) {
-        character.Draw(renderer.getBatch());
-        character.Update(delta);
+        character.draw(renderer.getBatch());
+        character.update(delta);
 
         moveCamera();
     }

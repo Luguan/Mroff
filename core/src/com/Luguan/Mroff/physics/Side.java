@@ -9,4 +9,5 @@ public enum Side {
     RIGHT,
     TOP,
     BOTTOM,
+    NONE,
 }
