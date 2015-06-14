@@ -1,5 +1,6 @@
 package com.Luguan.Mroff.screen;
 
+import com.Luguan.Mroff.Mroff;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
@@ -30,7 +31,7 @@ public class MenuScreen extends CenteredMenu {
 		if (button.equals("New Game")) {
 			action.newGame();
 		} else if (button.equals("Full Screen")) {
-			Gdx.graphics.setDisplayMode(Gdx.graphics.getDisplayModes()[0]);
+			Mroff.getInstance().goFullscreen();
 		}
 	}
 

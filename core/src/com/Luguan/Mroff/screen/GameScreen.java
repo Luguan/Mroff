@@ -40,13 +40,17 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
 
     private void update(float delta) {
         if (isPaused()) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
+                menuResume();
+            }
+
             // If the game is paused, don't update
             return;
         }
 
         character.update(delta);
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
             pauseMenu = new PauseMenuScreen(this);
             pauseMenu.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
