@@ -35,6 +35,8 @@ public class LivingEntity extends ObjectPhysics{
     @Override
     public void update(float delta) {
         super.update(delta);
+        sprite.setX(x);
+        sprite.setY(y);
     }
 
     public Vector2 getPosition() {
@@ -42,7 +44,8 @@ public class LivingEntity extends ObjectPhysics{
     }
 
     public void setPosition(float x, float y) {
-        sprite.setPosition(x, y);
+        this.x = x;
+        this.y = y;
     }
 
     public Sprite getSprite() {

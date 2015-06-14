@@ -16,17 +16,19 @@ public class Player extends LivingEntity{
     public Player() {
         super(new Sprite(Mroff.getInstance().getTexture("Body")));
 
-        getSprite().setSize(3/2f,4/2f);
+        width = 3/2f;
+        height = 4/2f;
+        getSprite().setSize(width,height);
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-            sprite.translate(-1, 0);
+            x--;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-            sprite.translate(1, 0);
+            x++;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
             jump();

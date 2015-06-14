@@ -47,9 +47,9 @@ public class Collision {
         return Side.NONE;
     }
 
-    public Side isCollidingTerrain(LivingEntity livingEntity) {
+    public Side isCollidingTerrain(ObjectPhysics objectPhysics) {
 
-        Rectangle r1 = livingEntity.getSprite().getBoundingRectangle();
+        Rectangle r1 = objectPhysics.getRectangle();
         Rectangle r2;
 
         for(int x =0; x <layer.getWidth(); x++) {
