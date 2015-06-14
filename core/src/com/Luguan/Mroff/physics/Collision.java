@@ -22,7 +22,7 @@ public class Collision {
     }
 
     public boolean isCollidingEnemy(LivingEntity livingEntity) {
-        throw new NotImplementedException();
+        return false;
     }
 
     private Side intersects(Rectangle r1, Rectangle r2) {
