@@ -57,7 +57,7 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
 	public void render() {
 		if (isLoading) {
 			if (assetManager.update()) {
-				setScreen(new MenuScreen(this));
+				openMainMenu();
 				isLoading = false;
 			}
 		}
@@ -85,5 +85,11 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
 	public void newGame() {
 		getScreen().dispose();
 		setScreen(new GameScreen());
+	}
+
+	public void openMainMenu() {
+		getScreen().dispose();
+		setScreen(new MenuScreen(this));
+
 	}
 }

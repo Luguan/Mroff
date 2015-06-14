@@ -33,4 +33,8 @@ public class MenuScreen extends CenteredMenu {
 			Gdx.graphics.setDisplayMode(Gdx.graphics.getDisplayModes()[0]);
 		}
 	}
+
+	public interface MenuAction {
+		void newGame();
+	}
 }
