@@ -24,7 +24,7 @@ public class Collision {
         return false;
     }
 
-    private Side intersects(Rectangle r1, Rectangle r2) {
+    public static Side intersects(Rectangle r1, Rectangle r2) {
         Rectangle intersection = new Rectangle();
         Intersector.intersectRectangles(r1, r2, intersection);
         if(intersection.x > r1.x) {
