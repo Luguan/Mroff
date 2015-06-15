@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Lukas on 6/12/2015.
@@ -24,29 +25,47 @@ public class Collision {
         return false;
     }
 
-    public static Side intersects(Rectangle r1, Rectangle r2) {
+    public static Vector2 intersects(Rectangle r1, Rectangle r2) {
         Rectangle intersection = new Rectangle();
+        float overlapRight = 0,
+                overlapTop = 0,
+                overlapLeft = 0,
+                overlapBottom = 0;
+        Vector2 overlap = new Vector2();
         Intersector.intersectRectangles(r1, r2, intersection);
-        if(intersection.x > r1.x) {
-            //Collides with the right side of the block
-            return Side.RIGHT;
+
+        overlapRight = intersection.x - r1.x;
+        overlapTop = intersection.y - r1.y;
+        overlapLeft = (intersection.x+intersection.width) - (r1.x +r1.width);
+        overlapBottom = (intersection.y + intersection.height) - (r1.y + r1.height);
+
+        if(overlapLeft < 0 && overlapRight < 0) {
+            //none of the sides are overlapping
+            overlap.x = 0;
         }
-        if(intersection.y > r1.y) {
-            //Collides with the top of the block
-            return Side.TOP;
+        else {
+            if(overlapLeft>overlapRight) {
+                overlap.x = -overlapLeft;
+            }
+            else {
+                overlap.x = overlapRight;
+            }
         }
-        if(intersection.x + intersection.width < r1.x + r1.width) {
-            //Collides with the left side of the block
-            return Side.LEFT;
+        if(overlapBottom < 0 && overlapTop < 0) {
+            overlap.y = 0;
         }
-        if(intersection.y + intersection.height < r1.y + r1.height) {
-            //Collides with bottom of the block
-            return Side.BOTTOM;
+        else {
+            if(overlapBottom>overlapTop) {
+                overlap.y = -overlapBottom;
+            }
+            else {
+                overlap.y = overlapTop;
+            }
         }
-        return Side.NONE;
+        return overlap;
     }
 
-    public Side isCollidingTerrain(ObjectPhysics objectPhysics) {
+    public Vector2 isCollidingTerrain(ObjectPhysics objectPhysics) {
 
         Rectangle r1 = objectPhysics.getRectangle();
         Rectangle r2;
@@ -54,12 +73,12 @@ public class Collision {
         for(int x =0; x <layer.getWidth(); x++) {
             for (int y = 0; y < layer.getHeight(); y++) {
                 r2 = new Rectangle(x,y,(layer.getTileWidth()* GameScreen.TILE_SCALE),(layer.getTileHeight()*GameScreen.TILE_SCALE));
-                Side side = intersects(r1, r2);
-                if(side!=Side.NONE) {
-                    return side;
+                Vector2 overlap = intersects(r1, r2);
+                if(overlap.x!=0 && overlap.y != 0) {
+                    return overlap;
                 }
             }
         }
-        return Side.NONE;
+        return new Vector2(0,0);
     }
 }
