@@ -1,11 +1,10 @@
 package com.Luguan.Mroff;
 
+import com.Luguan.Mroff.input.GlobalKeybindings;
 import com.Luguan.Mroff.screen.GameScreen;
 import com.Luguan.Mroff.screen.LoadingScreen;
 import com.Luguan.Mroff.screen.MenuScreen;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
@@ -20,6 +19,7 @@ import java.util.List;
 
 public class Mroff extends Game implements MenuScreen.MenuAction {
 
+	private final InputMultiplexer inputMultiplexer = new InputMultiplexer();
 	private static Mroff instance;
 	private AssetManager assetManager;
 	private boolean isLoading = true;
@@ -36,6 +36,8 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
 	public void create() {
 		loadAssets();
 		setScreen(new LoadingScreen());
+		Gdx.input.setInputProcessor(inputMultiplexer);
+		inputMultiplexer.addProcessor(new GlobalKeybindings());
 	}
 
 	private void loadAssets() {
@@ -63,15 +65,8 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
 				isLoading = false;
 			}
 		}
-		globalKeybindings();
 
 		super.render();
-	}
-
-	private void globalKeybindings() {
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-			goFullscreen();
-		}
 	}
 
 	public TiledMap getMap(String mapName) {
@@ -105,5 +100,9 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
 
 	public void goFullscreen() {
 		Gdx.graphics.setDisplayMode(Gdx.graphics.getDisplayModes()[0]);
+	}
+
+	public InputMultiplexer getInputMultiplexer() {
+		return inputMultiplexer;
 	}
 }
