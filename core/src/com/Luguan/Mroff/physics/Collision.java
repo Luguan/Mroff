@@ -28,8 +28,22 @@ public class Collision {
     public static Vector2 intersects(Rectangle r1, Rectangle r2) {
         Rectangle intersection = new Rectangle();
         Intersector.intersectRectangles(r1, r2, intersection);
-
-        return new Vector2(intersection.getWidth(), intersection.getHeight());
+        Vector2 result = new Vector2(intersection.getWidth(), -intersection.getHeight());
+        if(intersection.x > r1.x) {
+            //Intersects with right side
+            result.x *= -1;
+        }
+        if(intersection.y > r1.y) {
+            //Intersects with top side
+        }
+        if(intersection.x + intersection.width < r1.x + r1.width) {
+            //Intersects with left side
+        }
+        if(intersection.y + intersection.height < r1.y + r1.height) {
+            //Intersects with bottom side
+            result.y *= -1;
+        }
+        return result;
     }
 
     public Vector2 isCollidingTerrain(ObjectPhysics objectPhysics) {
