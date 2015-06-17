@@ -33,7 +33,6 @@ public class Collision {
     }
 
     public Vector2 isCollidingTerrain(ObjectPhysics objectPhysics) {
-
         Rectangle r1 = objectPhysics.getRectangle();
         Rectangle r2;
 
@@ -41,7 +40,7 @@ public class Collision {
             for (int y = 0; y < layer.getHeight(); y++) {
                 r2 = new Rectangle(x,y,(layer.getTileWidth()* GameScreen.TILE_SCALE),(layer.getTileHeight()*GameScreen.TILE_SCALE));
                 Vector2 overlap = intersects(r1, r2);
-                if(overlap.x!=0 && overlap.y != 0) {
+                if(overlap.x!=0 || overlap.y != 0) {
                     return overlap;
                 }
             }

@@ -2,6 +2,7 @@ package com.Luguan.Mroff.physics;
 
 import com.Luguan.Mroff.Mroff;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Lukas on 6/14/2015.
@@ -21,18 +22,15 @@ public class ObjectPhysics {
     }
 
     public void update(float delta) {
-        /*
-        Side collidingTerrain = collision.isCollidingTerrain(this);
+        Vector2 collidingTerrain = collision.isCollidingTerrain(this);
         System.out.println(collidingTerrain);
-        if(collidingTerrain != Side.TOP) {
+        if(collidingTerrain.len() == 0) {
             heightAcceleration(delta);
         }
         else {
-
             accelerationY = 0;
         }
         y+=accelerationY;
-        */
     }
 
     public Rectangle getRectangle() {
