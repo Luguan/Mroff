@@ -38,10 +38,12 @@ public class Collision {
 
         for(int x =0; x <layer.getWidth(); x++) {
             for (int y = 0; y < layer.getHeight(); y++) {
-                r2 = new Rectangle(x,y,(layer.getTileWidth()* GameScreen.TILE_SCALE),(layer.getTileHeight()*GameScreen.TILE_SCALE));
-                Vector2 overlap = intersects(r1, r2);
-                if(overlap.x!=0 || overlap.y != 0) {
-                    return overlap;
+                if(layer.getCell(x,y) != null) {
+                    r2 = new Rectangle(x, y, (layer.getTileWidth() * GameScreen.TILE_SCALE), (layer.getTileHeight() * GameScreen.TILE_SCALE));
+                    Vector2 overlap = intersects(r1, r2);
+                    if (overlap.x != 0 || overlap.y != 0) {
+                        return overlap;
+                    }
                 }
             }
         }

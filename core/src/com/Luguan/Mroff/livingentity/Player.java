@@ -16,8 +16,8 @@ public class Player extends LivingEntity{
     public Player() {
         super(new Sprite(Mroff.getInstance().getTexture("Body")));
 
-        width = 3/2f;
-        height = 4/2f;
+        width = 3/4f;
+        height = 4/4f;
         getSprite().setSize(width,height);
     }
 

@@ -22,17 +22,18 @@ public class ObjectPhysics {
     }
 
     public void update(float delta) {
+        heightAcceleration(delta);
+        y+=accelerationY;
         Vector2 collidingTerrain = collision.isCollidingTerrain(this);
         System.out.println(collidingTerrain);
         if(collidingTerrain.len() == 0) {
-            heightAcceleration(delta);
+
         }
         else {
             accelerationY = 0;
+            y+=collidingTerrain.y;
         }
-        y+=accelerationY;
     }
-
     public Rectangle getRectangle() {
         return new Rectangle(x, y, width, height);
     }

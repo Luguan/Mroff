@@ -111,7 +111,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
 
     @Override
     public void resize(int width, int height) {
-        float scale = 0.06f;
+        float scale = 0.02f;
         cam.viewportWidth = scale * width;
         cam.viewportHeight = scale * height;
         cam.update();
