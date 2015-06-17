@@ -27,42 +27,9 @@ public class Collision {
 
     public static Vector2 intersects(Rectangle r1, Rectangle r2) {
         Rectangle intersection = new Rectangle();
-        float overlapRight = 0,
-                overlapTop = 0,
-                overlapLeft = 0,
-                overlapBottom = 0;
-        Vector2 overlap = new Vector2();
         Intersector.intersectRectangles(r1, r2, intersection);
 
-        overlapRight = intersection.x - r1.x;
-        overlapTop = intersection.y - r1.y;
-        overlapLeft = (intersection.x+intersection.width) - (r1.x +r1.width);
-        overlapBottom = (intersection.y + intersection.height) - (r1.y + r1.height);
-
-        if(overlapLeft < 0 && overlapRight < 0) {
-            //none of the sides are overlapping
-            overlap.x = 0;
-        }
-        else {
-            if(overlapLeft>overlapRight) {
-                overlap.x = -overlapLeft;
-            }
-            else {
-                overlap.x = overlapRight;
-            }
-        }
-        if(overlapBottom < 0 && overlapTop < 0) {
-            overlap.y = 0;
-        }
-        else {
-            if(overlapBottom>overlapTop) {
-                overlap.y = -overlapBottom;
-            }
-            else {
-                overlap.y = overlapTop;
-            }
-        }
-        return overlap;
+        return new Vector2(intersection.getWidth(), intersection.getHeight());
     }
 
     public Vector2 isCollidingTerrain(ObjectPhysics objectPhysics) {

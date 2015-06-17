@@ -21,6 +21,7 @@ public class ObjectPhysics {
     }
 
     public void update(float delta) {
+        /*
         Side collidingTerrain = collision.isCollidingTerrain(this);
         System.out.println(collidingTerrain);
         if(collidingTerrain != Side.TOP) {
@@ -31,6 +32,7 @@ public class ObjectPhysics {
             accelerationY = 0;
         }
         y+=accelerationY;
+        */
     }
 
     public Rectangle getRectangle() {
