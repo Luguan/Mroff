@@ -23,7 +23,7 @@ public abstract class CenteredMenu extends ScreenAdapter {
 	public CenteredMenu() {
 
 		stage = new Stage(new ScreenViewport());
-		Gdx.input.setInputProcessor(stage);
+		Mroff.getInstance().getInputMultiplexer().addProcessor(stage);
 		skin = Mroff.getInstance().getSkin();
 
 		Group grp = createMainMenu();
@@ -95,7 +95,7 @@ public abstract class CenteredMenu extends ScreenAdapter {
 	@Override
 	public void dispose() {
 		stage.dispose();
-		Gdx.input.setInputProcessor(null);
+		Mroff.getInstance().getInputMultiplexer().removeProcessor(stage);
 	}
 
 
