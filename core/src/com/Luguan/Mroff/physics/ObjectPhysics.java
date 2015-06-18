@@ -18,7 +18,7 @@ public class ObjectPhysics {
     }
 
     public void heightAcceleration(float delta) {
-        accelerationY -= 0.4f * delta;
+        accelerationY -= 0.2f * delta;
     }
 
     public void update(float delta) {
@@ -31,7 +31,12 @@ public class ObjectPhysics {
         }
         else {
             accelerationY = 0;
-            y+=collidingTerrain.y;
+            if(collidingTerrain.x != 0) {
+                x += collidingTerrain.x;
+            }
+            if(collidingTerrain.y !=0) {
+                y += collidingTerrain.y;
+            }
         }
     }
     public Rectangle getRectangle() {
