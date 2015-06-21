@@ -15,7 +15,7 @@ public class ObjectPhysics {
     Collision collision;
     public ObjectPhysics() {
         accelerationY = 0f;
-        collision = new Collision(Mroff.getInstance().getMap("Level1"));
+        collision = new Collision(Mroff.getInstance().getMap("Level2"));
     }
 
     public void heightAcceleration(float delta) {
@@ -30,11 +30,9 @@ public class ObjectPhysics {
         System.out.println(collidingTerrain);
 
         if (Math.abs(collidingTerrain.x) > Math.abs(collidingTerrain.y)) {
-            System.out.println("Y First");
             updateCollisionY(collidingTerrain);
             updateCollsionX(collision.isCollidingTerrain(this));
         } else {
-            System.out.println("X First");
             updateCollsionX(collidingTerrain);
             updateCollisionY(collision.isCollidingTerrain(this));
         }
@@ -49,7 +47,6 @@ public class ObjectPhysics {
     }
 
     private void updateCollisionY(Vector2 collidingTerrain) {
-        //Y Direction
         if(collidingTerrain.len() != 0) {
             accelerationY = 0;
             if(collidingTerrain.y > 0) {
