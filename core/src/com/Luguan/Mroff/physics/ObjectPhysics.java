@@ -40,7 +40,6 @@ public class ObjectPhysics {
             }
         }
 
-
         //X Direction
         collidingTerrain = collision.isCollidingTerrain(this);
         if(collidingTerrain.len() != 0) {

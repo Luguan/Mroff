@@ -25,10 +25,10 @@ public class Player extends LivingEntity{
     public void update(float delta) {
         super.update(delta);
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-            x -= 0.5f;
+            x -= 0.3f;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-            x += 0.5f;
+            x += 0.3f;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
             if(!inAir) {
