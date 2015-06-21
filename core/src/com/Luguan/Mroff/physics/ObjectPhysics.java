@@ -29,6 +29,26 @@ public class ObjectPhysics {
         Vector2 collidingTerrain = collision.isCollidingTerrain(this);
         System.out.println(collidingTerrain);
 
+        if (Math.abs(collidingTerrain.x) > Math.abs(collidingTerrain.y)) {
+            System.out.println("Y First");
+            updateCollisionY(collidingTerrain);
+            updateCollsionX(collision.isCollidingTerrain(this));
+        } else {
+            System.out.println("X First");
+            updateCollsionX(collidingTerrain);
+            updateCollisionY(collision.isCollidingTerrain(this));
+        }
+    }
+
+    private void updateCollsionX(Vector2 collidingTerrain) {
+        if(collidingTerrain.len() != 0) {
+            if(collidingTerrain.x != 0) {
+                x+=collidingTerrain.x;
+            }
+        }
+    }
+
+    private void updateCollisionY(Vector2 collidingTerrain) {
         //Y Direction
         if(collidingTerrain.len() != 0) {
             accelerationY = 0;
@@ -39,16 +59,8 @@ public class ObjectPhysics {
                 y += collidingTerrain.y;
             }
         }
-
-
-        //X Direction
-        collidingTerrain = collision.isCollidingTerrain(this);
-        if(collidingTerrain.len() != 0) {
-            if(collidingTerrain.x != 0) {
-                x+=collidingTerrain.x;
-            }
-        }
     }
+
     public Rectangle getRectangle() {
         return new Rectangle(x, y, width, height);
     }
