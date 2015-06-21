@@ -23,19 +23,24 @@ public class ObjectPhysics {
 
     public void update(float delta) {
         heightAcceleration(delta);
-        y+=accelerationY;
-        Vector2 collidingTerrain = collision.isCollidingTerrain(this);
-        System.out.println(collidingTerrain);
-        if(collidingTerrain.len() == 0) {
+        y += accelerationY;
 
-        }
-        else {
+        // Y Direction
+        Vector2 collidingTerrain = collision.isCollidingTerrain(this);
+        if (collidingTerrain.len() != 0) {
             accelerationY = 0;
-            if(collidingTerrain.x != 0) {
-                x += collidingTerrain.x;
-            }
             if(collidingTerrain.y !=0) {
+                System.out.println("Y " + collidingTerrain.y);
                 y += collidingTerrain.y;
+            }
+        }
+
+        // X Direction
+        collidingTerrain = collision.isCollidingTerrain(this);
+        if (collidingTerrain.len() != 0) {
+            if(collidingTerrain.x != 0) {
+                System.out.println("X " + collidingTerrain.x);
+                x += collidingTerrain.x;
             }
         }
     }

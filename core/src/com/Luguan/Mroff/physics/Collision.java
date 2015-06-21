@@ -8,6 +8,9 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Lukas on 6/12/2015.
  */
@@ -48,19 +51,31 @@ public class Collision {
 
     public Vector2 isCollidingTerrain(ObjectPhysics objectPhysics) {
         Rectangle r1 = objectPhysics.getRectangle();
-        Rectangle r2;
+
+        List<Vector2> overlaps = new ArrayList<Vector2>();
 
         for(int x =0; x <layer.getWidth(); x++) {
             for (int y = 0; y < layer.getHeight(); y++) {
                 if(layer.getCell(x,y) != null) {
-                    r2 = new Rectangle(x, y, (layer.getTileWidth() * GameScreen.TILE_SCALE), (layer.getTileHeight() * GameScreen.TILE_SCALE));
+                    Rectangle r2 = new Rectangle(x, y, (layer.getTileWidth() * GameScreen.TILE_SCALE), (layer.getTileHeight() * GameScreen.TILE_SCALE));
                     Vector2 overlap = intersects(r1, r2);
                     if (overlap.x != 0 || overlap.y != 0) {
-                        return overlap;
+                        overlaps.add(overlap);
                     }
                 }
             }
         }
-        return new Vector2(0,0);
+
+        if (overlaps.size() == 0) {
+            return new Vector2(0,0);
+        }
+
+        Vector2 smallestOverlap = overlaps.get(0);
+        for(Vector2 overlap : overlaps) {
+            if (overlap.len() < smallestOverlap.len()) {
+                smallestOverlap = overlap;
+            }
+        }
+        return smallestOverlap;
     }
 }
