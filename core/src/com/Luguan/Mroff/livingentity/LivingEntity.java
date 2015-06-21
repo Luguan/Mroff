@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 public class LivingEntity extends ObjectPhysics{
 
     Sprite sprite;
-    public boolean inAir;
+
 
     public LivingEntity(Sprite character) {
         inAir = false;

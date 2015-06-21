@@ -31,7 +31,10 @@ public class Player extends LivingEntity{
             x += 0.5f;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-            jump();
+            if(!inAir) {
+                inAir = true;
+                jump();
+            }
         }
     }
 

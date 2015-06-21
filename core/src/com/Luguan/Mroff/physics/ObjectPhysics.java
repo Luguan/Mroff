@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 public class ObjectPhysics {
 
     protected float x, y, accelerationY, accelerationX, width, height;
+    protected boolean inAir;
 
     Collision collision;
     public ObjectPhysics() {
@@ -23,24 +24,28 @@ public class ObjectPhysics {
 
     public void update(float delta) {
         heightAcceleration(delta);
-        y += accelerationY;
 
-        // Y Direction
+        y+=accelerationY;
         Vector2 collidingTerrain = collision.isCollidingTerrain(this);
-        if (collidingTerrain.len() != 0) {
+        System.out.println(collidingTerrain);
+
+        //Y Direction
+        if(collidingTerrain.len() != 0) {
             accelerationY = 0;
-            if(collidingTerrain.y !=0) {
-                System.out.println("Y " + collidingTerrain.y);
+            if(collidingTerrain.y > 0) {
+                inAir = false;
+            }
+            if(collidingTerrain.y != 0) {
                 y += collidingTerrain.y;
             }
         }
 
-        // X Direction
+
+        //X Direction
         collidingTerrain = collision.isCollidingTerrain(this);
-        if (collidingTerrain.len() != 0) {
+        if(collidingTerrain.len() != 0) {
             if(collidingTerrain.x != 0) {
-                System.out.println("X " + collidingTerrain.x);
-                x += collidingTerrain.x;
+                x+=collidingTerrain.x;
             }
         }
     }
