@@ -54,7 +54,7 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
 
 		// only needed once
 		assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-		assetManager.load("maps/Level1.tmx", TiledMap.class);
+		assetManager.load("maps/Level2.tmx", TiledMap.class);
 	}
 
 	@Override

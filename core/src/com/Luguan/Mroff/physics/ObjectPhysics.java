@@ -15,7 +15,7 @@ public class ObjectPhysics {
     Collision collision;
     public ObjectPhysics() {
         accelerationY = 0f;
-        collision = new Collision(Mroff.getInstance().getMap("Level1"));
+        collision = new Collision(Mroff.getInstance().getMap("Level2"));
     }
 
     public void heightAcceleration(float delta) {

@@ -29,11 +29,11 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     public static final float TILE_SCALE = 1/10f;
 
     public GameScreen(){
-        level1 = Mroff.getInstance().getMap("Level1");
+        level1 = Mroff.getInstance().getMap("Level2");
 
         cam = new OrthographicCamera();
 
-        renderer = new OrthogonalTiledMapRenderer(Mroff.getInstance().getMap("Level1"), TILE_SCALE);
+        renderer = new OrthogonalTiledMapRenderer(Mroff.getInstance().getMap("Level2"), TILE_SCALE);
 
         spawnCharacter();
     }
