@@ -1,6 +1,7 @@
 package com.Luguan.Mroff.screen;
 
 import com.Luguan.Mroff.Mroff;
+import com.Luguan.Mroff.livingentity.Item;
 import com.Luguan.Mroff.livingentity.Player;
 import com.Luguan.Mroff.util.Utils;
 import com.badlogic.gdx.Gdx;
@@ -25,6 +26,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     OrthogonalTiledMapRenderer renderer;
     ScreenAdapter pauseMenu;
     Player character;
+    Item item;
 
     public static final float TILE_SCALE = 1/10f;
 
@@ -49,6 +51,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         }
 
         character.update(delta);
+        item.update(delta);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
             pauseMenu = new PauseMenuScreen(this);
@@ -101,6 +104,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         renderer.render();
 
         character.draw(renderer.getBatch());
+        item.draw(renderer.getBatch());
 
         if (pauseMenu != null) {
             pauseMenu.render(delta);

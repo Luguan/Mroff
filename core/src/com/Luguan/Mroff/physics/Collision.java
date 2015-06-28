@@ -44,7 +44,6 @@ public class Collision {
         }
         if(intersection.y + intersection.height < r1.y + r1.height) {
             //Intersects with bottom side
-            result.y *= -1;
         }
         return result;
     }

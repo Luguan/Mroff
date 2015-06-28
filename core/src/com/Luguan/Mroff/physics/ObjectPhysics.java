@@ -1,6 +1,7 @@
 package com.Luguan.Mroff.physics;
 
 import com.Luguan.Mroff.Mroff;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -27,7 +28,7 @@ public class ObjectPhysics {
 
         y+=accelerationY;
         Vector2 collidingTerrain = collision.isCollidingTerrain(this);
-        System.out.println(collidingTerrain);
+        //System.out.println(collidingTerrain);
 
         if (Math.abs(collidingTerrain.x) > Math.abs(collidingTerrain.y)) {
             updateCollisionY(collidingTerrain);
@@ -48,12 +49,13 @@ public class ObjectPhysics {
 
     private void updateCollisionY(Vector2 collidingTerrain) {
         if(collidingTerrain.len() != 0) {
-            accelerationY = 0;
             if(collidingTerrain.y > 0) {
                 inAir = false;
             }
             if(collidingTerrain.y != 0) {
                 y += collidingTerrain.y;
+                System.out.println(collidingTerrain);
+                accelerationY = 0;
             }
         }
     }
