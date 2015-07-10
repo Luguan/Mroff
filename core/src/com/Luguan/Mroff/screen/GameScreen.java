@@ -51,7 +51,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         }
 
         character.update(delta);
-        item.update(delta);
+//        item.update(delta);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
             pauseMenu = new PauseMenuScreen(this);
@@ -104,7 +104,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         renderer.render();
 
         character.draw(renderer.getBatch());
-        item.draw(renderer.getBatch());
+//        item.draw(renderer.getBatch());
 
         if (pauseMenu != null) {
             pauseMenu.render(delta);
