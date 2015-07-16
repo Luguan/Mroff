@@ -18,14 +18,16 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Mroff extends Game implements MenuScreen.MenuAction {
-
 	private final InputMultiplexer inputMultiplexer = new InputMultiplexer();
 	private static Mroff instance;
 	private AssetManager assetManager;
 	private boolean isLoading = true;
+	private boolean isFullscreen = false;
+	private int defaultWidth, defaultHeight;
 
 	public Mroff() {
 		instance = this;
+
 	}
 
 	public static Mroff getInstance() {
@@ -38,6 +40,8 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
 		setScreen(new LoadingScreen());
 		Gdx.input.setInputProcessor(inputMultiplexer);
 		inputMultiplexer.addProcessor(new GlobalKeybindings());
+		defaultWidth = Gdx.graphics.getWidth();
+		defaultHeight = Gdx.graphics.getHeight();
 	}
 
 	private void loadAssets() {
@@ -99,8 +103,24 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
 	}
 
 	public void goFullscreen() {
-		Gdx.graphics.setDisplayMode(Gdx.graphics.getDisplayModes()[0]);
+		isFullscreen = true;
+		System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+		Gdx.graphics.setDisplayMode(Gdx.graphics.getDesktopDisplayMode().width, Gdx.graphics.getDesktopDisplayMode().height, false);
 	}
+
+	public void goWindowMode() {
+		isFullscreen = false;
+		System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
+		Gdx.graphics.setDisplayMode(defaultWidth, defaultHeight, false);
+	}
+
+	public void toggleFullscreen() {
+		if (isFullscreen)
+			goWindowMode();
+		else
+			goFullscreen();
+	}
+
 
 	public InputMultiplexer getInputMultiplexer() {
 		return inputMultiplexer;

@@ -31,7 +31,7 @@ public class MenuScreen extends CenteredMenu {
 		if (button.equals("New Game")) {
 			action.newGame();
 		} else if (button.equals("Full Screen")) {
-			Mroff.getInstance().goFullscreen();
+			Mroff.getInstance().toggleFullscreen();
 		}
 	}
 
