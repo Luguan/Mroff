@@ -42,7 +42,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
 
     private void update(float delta) {
         if (isPaused()) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 menuResume();
             }
 
@@ -53,7 +53,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         character.update(delta);
 //        item.update(delta);
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             pauseMenu = new PauseMenuScreen(this);
             pauseMenu.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }

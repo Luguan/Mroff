@@ -1,11 +1,12 @@
 package com.Luguan.Mroff.client;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 import com.Luguan.Mroff.Mroff;
 
-public class HtmlLauncher extends GwtApplication {
+public class HtmlLauncher extends GwtApplication implements Mroff.NativeWindowManager {
 
         @Override
         public GwtApplicationConfiguration getConfig () {
@@ -14,6 +15,17 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener getApplicationListener () {
-                return new Mroff();
+                return new Mroff(this);
+        }
+
+        @Override
+        public boolean goFullscreen() {
+                Gdx.graphics.setDisplayMode(Gdx.graphics.getDisplayModes()[0]);
+                return true;
+        }
+
+        @Override
+        public boolean goWindowMode(int width, int height) {
+                return true;
         }
 }

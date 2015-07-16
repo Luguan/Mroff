@@ -24,8 +24,10 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
 	private boolean isLoading = true;
 	private boolean isFullscreen = false;
 	private int defaultWidth, defaultHeight;
+	private NativeWindowManager windowManager;
 
-	public Mroff() {
+	public Mroff(NativeWindowManager windowManager) {
+		this.windowManager = windowManager;
 		instance = this;
 
 	}
@@ -103,22 +105,14 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
 	}
 
 	public void goFullscreen() {
-		isFullscreen = true;
-		if (Gdx.app.getType() == Application.ApplicationType.WebGL) {
-			Gdx.graphics.setDisplayMode(Gdx.graphics.getDisplayModes()[0]);
-		} else {
-			System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
-			Gdx.graphics.setDisplayMode(Gdx.graphics.getDesktopDisplayMode().width, Gdx.graphics.getDesktopDisplayMode().height, false);
+		if (windowManager.goFullscreen()) {
+			isFullscreen = true;
 		}
 	}
 
 	public void goWindowMode() {
-		isFullscreen = false;
-		if (Gdx.app.getType() == Application.ApplicationType.WebGL) {
-
-		} else {
-			System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
-			Gdx.graphics.setDisplayMode(defaultWidth, defaultHeight, false);
+		if (windowManager.goWindowMode(defaultWidth, defaultHeight)) {
+			isFullscreen = false;
 		}
 	}
 
@@ -132,5 +126,11 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
 
 	public InputMultiplexer getInputMultiplexer() {
 		return inputMultiplexer;
+	}
+
+
+	public interface NativeWindowManager {
+		boolean goFullscreen();
+		boolean goWindowMode(int width, int height);
 	}
 }
