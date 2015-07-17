@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
 
 /**
@@ -67,7 +66,7 @@ public class Collision {
                         overlaps.add(overlap);
                     }
                     if(cell.getTile().getProperties().containsKey("ItemSpawn")) {
-                        event.onCollision();
+                        event.onItemBlockCollision(x, y);
                     }
                 }
             }
@@ -87,7 +86,7 @@ public class Collision {
     }
 
     public interface CollisionEvent {
-        void onCollision();
+        void onItemBlockCollision(int x, int y);
     }
 
 }

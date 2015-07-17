@@ -3,6 +3,7 @@ package com.Luguan.Mroff.screen;
 import com.Luguan.Mroff.Mroff;
 import com.Luguan.Mroff.livingentity.Item;
 import com.Luguan.Mroff.livingentity.Player;
+import com.Luguan.Mroff.physics.Collision;
 import com.Luguan.Mroff.util.Utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -18,24 +19,26 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by Lukas on 6/9/2015.
  */
-public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMenuAction {
+public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMenuAction, Collision.CollisionEvent {
     private final OrthographicCamera cam;
-    private final TiledMap level1;
+    private final TiledMap level;
     OrthogonalTiledMapRenderer renderer;
     ScreenAdapter pauseMenu;
     Player character;
     List<Item> items;
+    Collision collision;
 
     public static final float TILE_SCALE = 1/10f;
 
     public GameScreen(){
-        level1 = Mroff.getInstance().getMap("Level2");
+        level = Mroff.getInstance().getMap("Level2");
+
+        collision = new Collision(level, this);
 
         items = new ArrayList<Item>();
 
@@ -80,7 +83,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     private void spawnCharacter() {
         character = new Player();
 
-        MapLayers layers = level1.getLayers();
+        MapLayers layers = level.getLayers();
 
         for(MapLayer layer: layers) {
 
@@ -143,8 +146,17 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         pauseMenu = null;
     }
 
+    public Collision getCollision() {
+        return collision;
+    }
+
     @Override
     public void menuReturnToMainMenu() {
         Mroff.getInstance().openMainMenu();
+    }
+
+    @Override
+    public void onItemBlockCollision(int x, int y) {
+
     }
 }

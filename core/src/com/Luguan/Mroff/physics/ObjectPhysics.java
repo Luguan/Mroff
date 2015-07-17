@@ -1,22 +1,22 @@
 package com.Luguan.Mroff.physics;
 
 import com.Luguan.Mroff.Mroff;
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.Luguan.Mroff.screen.GameScreen;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Lukas on 6/14/2015.
  */
-public class ObjectPhysics {
+public class ObjectPhysics  {
 
     protected float x, y, accelerationY, accelerationX, width, height;
     protected boolean inAir;
 
-    Collision collision;
+
     public ObjectPhysics() {
         accelerationY = 0f;
-        collision = new Collision(Mroff.getInstance().getMap("Level2"));
+
     }
 
     public void heightAcceleration(float delta) {
@@ -27,6 +27,8 @@ public class ObjectPhysics {
         heightAcceleration(delta);
 
         y+=accelerationY;
+
+        Collision collision = ((GameScreen) Mroff.getInstance().getScreen()).getCollision();
         Vector2 collidingTerrain = collision.isCollidingTerrain(this);
         //System.out.println(collidingTerrain);
 
