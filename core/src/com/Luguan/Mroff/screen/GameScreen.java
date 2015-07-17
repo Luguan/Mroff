@@ -17,6 +17,10 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by Lukas on 6/9/2015.
  */
@@ -26,12 +30,14 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     OrthogonalTiledMapRenderer renderer;
     ScreenAdapter pauseMenu;
     Player character;
-    Item item;
+    List<Item> items;
 
     public static final float TILE_SCALE = 1/10f;
 
     public GameScreen(){
         level1 = Mroff.getInstance().getMap("Level2");
+
+        items = new ArrayList<Item>();
 
         cam = new OrthographicCamera();
 
@@ -51,7 +57,9 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         }
 
         character.update(delta);
-//        item.update(delta);
+        for(Item item : items) {
+            item.update(delta);
+        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             pauseMenu = new PauseMenuScreen(this);
@@ -104,7 +112,10 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         renderer.render();
 
         character.draw(renderer.getBatch());
-//        item.draw(renderer.getBatch());
+
+        for(Item item : items) {
+            item.draw(renderer.getBatch());
+        }
 
         if (pauseMenu != null) {
             pauseMenu.render(delta);

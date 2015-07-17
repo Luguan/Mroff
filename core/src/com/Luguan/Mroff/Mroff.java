@@ -47,7 +47,7 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
 	}
 
 	private void loadAssets() {
-		List<String> textures = new ArrayList<String>(Arrays.asList(new String[]{"Body"}));
+		List<String> textures = new ArrayList<String>(Arrays.asList(new String[]{"Body", "items/Mushroom"}));
 
 		assetManager = new AssetManager();
 

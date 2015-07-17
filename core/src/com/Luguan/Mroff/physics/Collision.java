@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 
 /**
@@ -16,11 +17,13 @@ import java.util.List;
  */
 public class Collision {
 
+    private  CollisionEvent event;
     private TiledMap map;
     private TiledMapTileLayer layer;
 
-    public Collision(TiledMap map) {
+    public Collision(TiledMap map, CollisionEvent event) {
         this.map = map;
+        this.event = event;
         layer = (TiledMapTileLayer)map.getLayers().get("Collision");
     }
 
@@ -56,11 +59,15 @@ public class Collision {
 
         for(int x =0; x <layer.getWidth(); x++) {
             for (int y = 0; y < layer.getHeight(); y++) {
-                if(layer.getCell(x,y) != null) {
+                TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+                if(cell != null) {
                     Rectangle r2 = new Rectangle(x, y, (layer.getTileWidth() * GameScreen.TILE_SCALE), (layer.getTileHeight() * GameScreen.TILE_SCALE));
                     Vector2 overlap = intersects(r1, r2);
                     if (overlap.x != 0 || overlap.y != 0) {
                         overlaps.add(overlap);
+                    }
+                    if(cell.getTile().getProperties().containsKey("ItemSpawn")) {
+                        event.onCollision();
                     }
                 }
             }
@@ -78,4 +85,9 @@ public class Collision {
         }
         return smallestOverlap;
     }
+
+    public interface CollisionEvent {
+        void onCollision();
+    }
+
 }
