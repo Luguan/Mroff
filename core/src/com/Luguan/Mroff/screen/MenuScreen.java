@@ -23,7 +23,6 @@ public class MenuScreen extends CenteredMenu {
 		bttns.add(createButton("Settings"));
 		bttns.add(createButton("Load custom map"));
 		bttns.add(createButton("Full Screen"));
-		bttns.add(createButton("David's secret button"));
 		return bttns;
 	}
 
