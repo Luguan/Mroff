@@ -34,7 +34,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     List<Item> items;
     Collision collision;
 
-    public static final float TILE_SCALE = 1/10f;
+    public static final float TILE_SCALE = 1/16f;
 
     public GameScreen(){
         level = Mroff.getInstance().getMap("Level2");
@@ -83,6 +83,8 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
 
     private void spawnCharacter() {
         character = new Player(this);
+        character.setPosition(5, 128 - 7);
+      /*  character = new Player(this);
 
         MapLayers layers = level.getLayers();
 
@@ -103,6 +105,8 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
                 }
             }
         }
+
+        character.setPosition(5, 7);*/
     }
 
     @Override
