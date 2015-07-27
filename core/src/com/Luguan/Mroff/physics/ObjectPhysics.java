@@ -10,13 +10,15 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class ObjectPhysics  {
 
+    private  CollisionEvent event;
+
     protected float x, y, accelerationY, accelerationX, width, height;
     protected boolean inAir;
 
 
-    public ObjectPhysics() {
+    public ObjectPhysics(CollisionEvent event) {
+        this.event = event;
         accelerationY = 0f;
-
     }
 
     public void heightAcceleration(float delta) {
@@ -56,7 +58,10 @@ public class ObjectPhysics  {
             }
             if(collidingTerrain.y != 0) {
                 y += collidingTerrain.y;
-                System.out.println(collidingTerrain);
+                //System.out.println(collidingTerrain);
+                if(accelerationY<0) {
+                    event.onItemBlockCollision((int)collidingTerrain.x, (int)collidingTerrain.y);
+                }
                 accelerationY = 0;
             }
         }
@@ -64,5 +69,9 @@ public class ObjectPhysics  {
 
     public Rectangle getRectangle() {
         return new Rectangle(x, y, width, height);
+    }
+
+    public interface CollisionEvent {
+        void onItemBlockCollision(int x, int y);
     }
 }

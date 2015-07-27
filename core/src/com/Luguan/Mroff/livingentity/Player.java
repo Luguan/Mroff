@@ -14,8 +14,8 @@ public class Player extends LivingEntity{
     public static final float MOVEMENT_SPEED = 0.3f;
     PlayerState playerState;
 
-    public Player() {
-        super(new Sprite(Mroff.getInstance().getTexture("Body")));
+    public Player(CollisionEvent event) {
+        super(new Sprite(Mroff.getInstance().getTexture("Body")), event);
 
         width = 3/4f;
         height = 4/4f;

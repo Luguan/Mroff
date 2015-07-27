@@ -4,6 +4,7 @@ import com.Luguan.Mroff.Mroff;
 import com.Luguan.Mroff.livingentity.Item;
 import com.Luguan.Mroff.livingentity.Player;
 import com.Luguan.Mroff.physics.Collision;
+import com.Luguan.Mroff.physics.ObjectPhysics;
 import com.Luguan.Mroff.util.Utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -24,7 +25,7 @@ import java.util.List;
 /**
  * Created by Lukas on 6/9/2015.
  */
-public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMenuAction, Collision.CollisionEvent {
+public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMenuAction, ObjectPhysics.CollisionEvent {
     private final OrthographicCamera cam;
     private final TiledMap level;
     OrthogonalTiledMapRenderer renderer;
@@ -38,7 +39,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     public GameScreen(){
         level = Mroff.getInstance().getMap("Level2");
 
-        collision = new Collision(level, this);
+        collision = new Collision(level);
 
         items = new ArrayList<Item>();
 
@@ -81,7 +82,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     }
 
     private void spawnCharacter() {
-        character = new Player();
+        character = new Player(this);
 
         MapLayers layers = level.getLayers();
 
@@ -157,6 +158,6 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
 
     @Override
     public void onItemBlockCollision(int x, int y) {
-
+        System.out.println("coll");
     }
 }

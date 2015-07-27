@@ -16,13 +16,12 @@ import java.util.List;
  */
 public class Collision {
 
-    private  CollisionEvent event;
+
     private TiledMap map;
     private TiledMapTileLayer layer;
 
-    public Collision(TiledMap map, CollisionEvent event) {
+    public Collision(TiledMap map) {
         this.map = map;
-        this.event = event;
         layer = (TiledMapTileLayer)map.getLayers().get("Collision");
     }
 
@@ -64,9 +63,9 @@ public class Collision {
                     Vector2 overlap = intersects(r1, r2);
                     if (overlap.x != 0 || overlap.y != 0) {
                         overlaps.add(overlap);
-                    }
-                    if(cell.getTile().getProperties().containsKey("ItemSpawn")) {
-                        event.onItemBlockCollision(x, y);
+                        if(cell.getTile().getProperties().containsKey("ItemSpawn")) {
+                            //event.onItemBlockCollision(x, y);
+                        }
                     }
                 }
             }
@@ -84,9 +83,4 @@ public class Collision {
         }
         return smallestOverlap;
     }
-
-    public interface CollisionEvent {
-        void onItemBlockCollision(int x, int y);
-    }
-
 }

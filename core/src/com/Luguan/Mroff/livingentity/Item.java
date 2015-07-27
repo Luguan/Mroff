@@ -2,6 +2,7 @@ package com.Luguan.Mroff.livingentity;
 
 import com.Luguan.Mroff.Mroff;
 import com.Luguan.Mroff.physics.ObjectPhysics;
+import com.Luguan.Mroff.screen.GameScreen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
@@ -12,7 +13,8 @@ public class Item extends ObjectPhysics{
 
     Texture item;
 
-    public Item() {
+    public Item(CollisionEvent event) {
+        super(event);
         item = Mroff.getInstance().getTexture("items/Mushroom");
     }
 

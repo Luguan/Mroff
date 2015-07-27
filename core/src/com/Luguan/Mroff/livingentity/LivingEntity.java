@@ -2,6 +2,7 @@ package com.Luguan.Mroff.livingentity;
 
 import com.Luguan.Mroff.Mroff;
 import com.Luguan.Mroff.physics.ObjectPhysics;
+import com.Luguan.Mroff.screen.GameScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -16,7 +17,8 @@ public class LivingEntity extends ObjectPhysics{
     Sprite sprite;
 
 
-    public LivingEntity(Sprite character) {
+    public LivingEntity(Sprite character,CollisionEvent event) {
+        super(event);
         inAir = false;
         this.sprite = character;
         sprite = new Sprite(Mroff.getInstance().getTexture("Body"));
