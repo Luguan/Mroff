@@ -28,7 +28,7 @@ import java.util.List;
  * Created by Lukas on 6/9/2015.
  */
 public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMenuAction, ObjectPhysics.CollisionEvent {
-    private static final float CAMERA_ZOOM = .01f;
+    private static final float CAMERA_ZOOM = .015f;
     private final OrthographicCamera cam;
     private final TiledMap level;
     OrthogonalTiledMapRenderer renderer;
@@ -96,7 +96,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
 
     private void spawnCharacter() {
         character = new Player(this);
-        character.setPosition(5, 128 - 7);
+        character.setPosition(15, 128 - 17);
       /*  character = new Player(this);
 
         MapLayers layers = level.getLayers();

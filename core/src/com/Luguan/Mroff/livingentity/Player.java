@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class Player extends LivingEntity{
 
-    public static final float MOVEMENT_SPEED = 0.3f;
+    public static final float MOVEMENT_SPEED = 0.15f;
     PlayerState playerState;
 
     public Player(CollisionEvent event) {
