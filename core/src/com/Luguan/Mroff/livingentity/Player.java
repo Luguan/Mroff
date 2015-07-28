@@ -38,7 +38,7 @@ public class Player extends LivingEntity{
         frameTime+=delta;
         super.update(delta);
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
-            if(frameTime>0.3f) {
+            if(frameTime>0.2f) {
                 frameTime = 0;
                 if(spriteFrame == 0) {
                     spriteFrame++;
@@ -56,7 +56,7 @@ public class Player extends LivingEntity{
             }
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-            if(frameTime>0.3f) {
+            if(frameTime>0.2f) {
                 frameTime = 0;
                 if(spriteFrame == 0) {
                     spriteFrame++;
