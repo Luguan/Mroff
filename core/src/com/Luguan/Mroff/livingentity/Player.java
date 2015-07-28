@@ -15,7 +15,7 @@ public class Player extends LivingEntity{
     PlayerState playerState;
 
     public Player(CollisionEvent event) {
-        super(new Sprite(Mroff.getInstance().getTexture("Body")), event);
+        super(new Sprite(Mroff.getInstance().getSheet(0, 0)), event);
 
         width = 3/4f;
         height = 4/4f;

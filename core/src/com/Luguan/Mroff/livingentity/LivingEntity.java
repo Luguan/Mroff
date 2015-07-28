@@ -17,11 +17,11 @@ public class LivingEntity extends ObjectPhysics{
     Sprite sprite;
 
 
-    public LivingEntity(Sprite character,CollisionEvent event) {
+    public LivingEntity(Sprite character, CollisionEvent event) {
         super(event);
         inAir = false;
         this.sprite = character;
-        sprite = new Sprite(Mroff.getInstance().getTexture("Body"));
+        sprite = new Sprite(character);
     }
 
     public void draw(Batch batch) {

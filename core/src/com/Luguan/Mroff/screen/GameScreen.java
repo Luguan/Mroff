@@ -26,6 +26,7 @@ import java.util.List;
  * Created by Lukas on 6/9/2015.
  */
 public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMenuAction, ObjectPhysics.CollisionEvent {
+    private static final float CAMERA_ZOOM = .01f;
     private final OrthographicCamera cam;
     private final TiledMap level;
     OrthogonalTiledMapRenderer renderer;
@@ -134,7 +135,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
 
     @Override
     public void resize(int width, int height) {
-        float scale = 0.03f;
+        float scale = CAMERA_ZOOM;
         cam.viewportWidth = scale * width;
         cam.viewportHeight = scale * height;
         cam.update();
