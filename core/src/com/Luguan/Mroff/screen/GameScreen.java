@@ -1,6 +1,7 @@
 package com.Luguan.Mroff.screen;
 
 import com.Luguan.Mroff.Mroff;
+import com.Luguan.Mroff.gui.DebugGUI;
 import com.Luguan.Mroff.livingentity.Item;
 import com.Luguan.Mroff.livingentity.Player;
 import com.Luguan.Mroff.physics.Collision;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -34,6 +36,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     Player character;
     List<Item> items;
     Collision collision;
+    DebugGUI debugGUI = new DebugGUI();
 
     public static final float TILE_SCALE = 1/16f;
 
@@ -41,14 +44,23 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         level = Mroff.getInstance().getMap("Level2");
 
         collision = new Collision(level);
-
         items = new ArrayList<Item>();
-
         cam = new OrthographicCamera();
-
         renderer = new OrthogonalTiledMapRenderer(Mroff.getInstance().getMap("Level2"), TILE_SCALE);
 
         spawnCharacter();
+
+        debugGUI.setListener(new DebugGUI.OnAction() {
+            @Override
+            public void onKillAll() {
+                // TODO
+            }
+
+            @Override
+            public void onRestart() {
+                // TODO
+            }
+        });
     }
 
     private void update(float delta) {
@@ -112,6 +124,8 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
 
     @Override
     public void render(float delta) {
+        update(delta);
+
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -130,7 +144,8 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
             pauseMenu.render(delta);
         }
 
-        update(delta);
+        debugGUI.draw();
+
     }
 
     @Override
