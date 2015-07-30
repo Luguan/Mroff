@@ -56,7 +56,10 @@ public class Player extends LivingEntity{
             x -= MOVEMENT_SPEED;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-            lookingRight=true;
+            if(!lookingRight) {
+                getSprite().flip(true,false);
+                lookingRight = true;
+            }
             if(frameTime>0.2f) {
                 frameTime = 0;
                 if(spriteFrame == 0) {
