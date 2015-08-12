@@ -75,10 +75,15 @@ public class ObjectPhysics  {
                     Vector2 overlap = intersects(r1, r2);
                     if (overlap.x != 0 || overlap.y != 0) {
                         if(Math.abs(overlap.x) > Math.abs(overlap.y)) {
-                            y+=overlap.y;
+                            this.y+=overlap.y;
+                            accelerationY = 0;
+                            
+                            if(overlap.y > 0) {
+                                inAir = false;
+                            }
                         }
                         else {
-                            x+=overlap.x;
+                            this.x+=overlap.x;
                         }
                         /*if(cell.getTile().getProperties().containsKey("ItemSpawn")) {
                             event.onItemBlockCollision(x, y);
