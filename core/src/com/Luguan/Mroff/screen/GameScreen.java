@@ -4,7 +4,6 @@ import com.Luguan.Mroff.Mroff;
 import com.Luguan.Mroff.gui.DebugGUI;
 import com.Luguan.Mroff.livingentity.Item;
 import com.Luguan.Mroff.livingentity.Player;
-import com.Luguan.Mroff.physics.Collision;
 import com.Luguan.Mroff.physics.ObjectPhysics;
 import com.Luguan.Mroff.util.Utils;
 import com.badlogic.gdx.Gdx;
@@ -12,12 +11,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 
@@ -35,7 +29,6 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     ScreenAdapter pauseMenu;
     Player character;
     List<Item> items;
-    Collision collision;
     DebugGUI debugGUI = new DebugGUI();
 
     public static final float TILE_SCALE = 1/16f;
@@ -43,7 +36,6 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     public GameScreen(){
         level = Mroff.getInstance().getMap("Level2");
 
-        collision = new Collision(level);
         items = new ArrayList<Item>();
         cam = new OrthographicCamera();
         renderer = new OrthogonalTiledMapRenderer(Mroff.getInstance().getMap("Level2"), TILE_SCALE);
@@ -91,7 +83,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     }
 
     private void moveCamera() {
-        cam.position.set(Utils.moveTowards(character.getPosition(), new Vector2(cam.position.x,cam.position.y)),0);
+        cam.position.set(Utils.moveTowards(character.getPosition(), new Vector2(cam.position.x, cam.position.y)), 0);
     }
 
     private void spawnCharacter() {
@@ -167,8 +159,8 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         pauseMenu = null;
     }
 
-    public Collision getCollision() {
-        return collision;
+    public TiledMap getLevel() {
+        return level;
     }
 
     @Override
