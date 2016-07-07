@@ -22,6 +22,7 @@ import java.util.List;
  * Created by Lukas on 6/9/2015.
  */
 public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMenuAction, ObjectPhysics.CollisionEvent {
+    public static final float TILE_SCALE = 1 / 16f;
     private static final float CAMERA_ZOOM = .015f;
     private final OrthographicCamera cam;
     private final TiledMap level;
@@ -31,9 +32,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     List<Item> items;
     DebugGUI debugGUI = new DebugGUI();
 
-    public static final float TILE_SCALE = 1/16f;
-
-    public GameScreen(){
+    public GameScreen() {
         level = Mroff.getInstance().getMap("Level2");
 
         items = new ArrayList<Item>();
@@ -66,7 +65,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         }
 
         character.update(delta);
-        for(Item item : items) {
+        for (Item item : items) {
             item.update(delta);
         }
 
@@ -128,7 +127,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
 
         character.draw(renderer.getBatch());
 
-        for(Item item : items) {
+        for (Item item : items) {
             item.draw(renderer.getBatch());
         }
 
@@ -171,5 +170,9 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     @Override
     public void onItemBlockCollision(int x, int y) {
         System.out.println("coll");
+    }
+
+    public Player getCharacter() {
+        return character;
     }
 }
