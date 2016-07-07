@@ -3,8 +3,10 @@ package com.Luguan.Mroff.physics;
 import com.Luguan.Mroff.Mroff;
 import com.Luguan.Mroff.livingentity.LivingEntity;
 import com.Luguan.Mroff.screen.GameScreen;
+import com.Luguan.Mroff.util.Debug;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -82,9 +84,12 @@ public class ObjectPhysics  {
         int sideX = (int) Math.floor(hitboxX);
         TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
 
+        Debug.addCheckedBox(hitboxX, 0, .001f, 1000, Color.BLUE);
+
         for(int row = low; row<=upper; row++) {
             if(directionRight) {
                 for (int posX = sideX; posX < sideX + moveX; posX++) {
+                    Debug.addCheckedBox(posX, row, 1, 1, Color.RED);
                     TiledMapTileLayer.Cell cell = collision.getCell(posX, row);
                     if (cell != null) {
                         return posX - hitboxX;
@@ -94,6 +99,7 @@ public class ObjectPhysics  {
             else {
                 for (int posX = sideX; posX > sideX + moveX; posX--) {
                     TiledMapTileLayer.Cell cell = collision.getCell(posX, row);
+                    Debug.addCheckedBox(posX, row, 1, 1, Color.RED);
                     if (cell != null) {
                         return posX - hitboxX + 1;
                     }

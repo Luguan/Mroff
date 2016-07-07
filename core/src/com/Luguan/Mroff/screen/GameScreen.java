@@ -5,14 +5,19 @@ import com.Luguan.Mroff.gui.DebugGUI;
 import com.Luguan.Mroff.livingentity.Item;
 import com.Luguan.Mroff.livingentity.Player;
 import com.Luguan.Mroff.physics.ObjectPhysics;
+import com.Luguan.Mroff.util.Debug;
 import com.Luguan.Mroff.util.Utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
@@ -134,6 +139,44 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         if (pauseMenu != null) {
             pauseMenu.render(delta);
         }
+
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        shapeRenderer.setAutoShapeType(true);
+        shapeRenderer.setProjectionMatrix(cam.combined);
+        shapeRenderer.begin();
+
+        for (Debug.Vector box : Debug.checkedBoxes) {
+            shapeRenderer.setColor(box.color);
+            shapeRenderer.rect(box.x, box.y, box.width, box.height);
+        }
+
+        TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
+
+        for (int x = 0; x < collision.getWidth(); x++) {
+            for (int y = 0; y < collision.getHeight(); y++) {
+                if (Player.intersects(new Rectangle(
+                        character.getPosition().x,
+                        character.getPosition().y,
+                        3/4f,
+                        1f
+                ), new Rectangle(x, y, 1, 1)).len() != 0) {
+                    shapeRenderer.setColor(Color.DARK_GRAY);
+                    shapeRenderer.rect(x, y, 1, 1);
+                }
+            }
+        }
+
+        shapeRenderer.setColor(Color.MAGENTA);
+        shapeRenderer.rect(character.getPosition().x,
+                character.getPosition().y,
+                3/4f, 1);
+
+
+
+        Debug.checkedBoxes.clear();
+
+
+        shapeRenderer.end();
 
         debugGUI.draw();
 
