@@ -27,7 +27,7 @@ public class Player extends LivingEntity{
         lookingRight = true;
 
         width = 3/4f;
-        height = 4/4f;
+        height = 9/10f;
         getSprite().setSize(width,height);
     }
 
@@ -76,12 +76,12 @@ public class Player extends LivingEntity{
             //if(!inAir) {
               //  inAir = true;
                 //jump();
-                y+=0.2f;
+                moveY(0.05f);
             //}
         }
         if(Gdx.input.isKeyPressed(Input.Keys.S))
         {
-            y-=0.2f;
+            moveY(-0.05f);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.C))
         {

@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.sun.glass.ui.SystemClipboard;
 
 /**
  * Created by Lukas on 6/14/2015.
@@ -31,7 +32,7 @@ public class ObjectPhysics  {
      * Moves the character on the y-axis
      * @param moveY The distance to move the character on the y-axis
      */
-    private void moveY(int moveY) {
+    public void moveY(float moveY) {
         boolean movingUp;
         float hitboxY;
 
@@ -43,6 +44,20 @@ public class ObjectPhysics  {
         else {
             hitboxY = y;
         }
+
+        float distanceY = findCollidingRowsY(hitboxY,movingUp,moveY);
+
+        if(movingUp) {
+            if(Math.min(distanceY, moveY) > 0) {
+                y += Math.min(distanceY, moveY);
+            }
+        }
+        else {
+            if(Math.max(distanceY,moveY) < 0) {
+                y += Math.max(distanceY,moveY);
+            }
+        }
+        System.out.println(distanceY);
     }
 
     /**
@@ -62,21 +77,27 @@ public class ObjectPhysics  {
             hitboxX = x;
         }
 
-        float distanceX = findCollidingRowsY(hitboxX, facingRight, moveX);
+        float distanceX = findCollidingRowsX(hitboxX, facingRight, moveX);
 
         if (facingRight) {
-            if(Math.min(distanceX, moveX)> 0){
+            if(Math.min(distanceX, moveX) > 0){
                 x += Math.min(distanceX, moveX);
             }
         } else {
-            if(Math.max(distanceX, moveX)<0){
+            if(Math.max(distanceX, moveX) < 0){
                 x += Math.max(distanceX, moveX);
             }
         }
-        System.out.println(distanceX);
     }
 
-    private float findCollidingRowsY(float hitboxX, boolean directionRight, float moveX) {
+    /**
+     * Checks the x-axis for collision with objects
+     * @param hitboxX the location for the players hitbox
+     * @param directionRight the direction to check
+     * @param moveX the distance to check for collision
+     * @return The distance that the character is able to move
+     */
+    private float findCollidingRowsX(float hitboxX, boolean directionRight, float moveX) {
         int low = (int) Math.floor(y);
         int upper = (int) Math.floor(y + height);
         int sideX = (int) Math.floor(hitboxX);
@@ -103,10 +124,38 @@ public class ObjectPhysics  {
         return moveX;
     }
 
-    private void findCollidingRowsX() {
-        float left = (float) Math.floor(x);
-        float right = (float) Math.floor(x + width);
+    /**
+     * Checks the y-axis for collision
+     * @param hitboxY The location of the players hitbox
+     * @param movingUp the direction to check for collision
+     * @param moveY The distance to check for collision
+     * @return The distance that the character is able to move
+     */
+    private float findCollidingRowsY(float hitboxY, boolean movingUp, float moveY) {
+        int left = (int) Math.floor(x);
+        int right = (int) Math.floor(x + width);
+        int sideY = (int) Math.floor(hitboxY);
+        TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
 
+        for(int row = left; row<=right; row++) {
+            if(movingUp) {
+                for (int posY = sideY; posY<sideY + moveY; posY++) {
+                    TiledMapTileLayer.Cell cell = collision.getCell(row, posY);
+                    if(cell != null) {
+                        return posY-hitboxY;
+                    }
+                }
+            }
+            else {
+                for (int posY = sideY; posY>sideY + moveY; posY--) {
+                    TiledMapTileLayer.Cell cell = collision.getCell(row, posY);
+                    if(cell != null) {
+                        return posY-hitboxY + 1;
+                    }
+                }
+            }
+        }
+        return moveY;
     }
 
     public boolean isCollidingEnemy(LivingEntity livingEntity) {
