@@ -25,10 +25,6 @@ public class ObjectPhysics  {
         accelerationY = 0f;
     }
 
-    public void move() {
-        //moveX();
-        //moveY();
-    }
 
     /**
      * Moves the character on the y-axis
@@ -59,7 +55,6 @@ public class ObjectPhysics  {
                 y += Math.max(distanceY,moveY);
             }
         }
-        System.out.println(distanceY);
     }
 
     /**
@@ -101,15 +96,14 @@ public class ObjectPhysics  {
      */
     private float findCollidingRowsX(float hitboxX, boolean directionRight, float moveX) {
         int low = (int) Math.floor(y);
-        int upper = (int) Math.floor(y + height);
+        int upper = (int) Math.floor(y + height - 0.00001f);
         int sideX = (int) Math.floor(hitboxX);
         TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
 
         Debug.addCheckedBox(hitboxX, 0, .001f, 1000, Color.BLUE);
-
-        for(int row = low; row<=upper; row++) {
-            if(directionRight) {
-                for (int posX = sideX; posX < sideX + moveX; posX++) {
+        if(directionRight) {
+            for (int posX = sideX; posX < sideX + moveX + 1; posX++) {
+                for (int row = low; row <= upper; row++){
                     Debug.addCheckedBox(posX, row, 1, 1, Color.RED);
                     TiledMapTileLayer.Cell cell = collision.getCell(posX, row);
                     if (cell != null) {
@@ -117,8 +111,10 @@ public class ObjectPhysics  {
                     }
                 }
             }
-            else {
-                for (int posX = sideX; posX > sideX + moveX; posX--) {
+        }
+        else {
+            for (int posX = sideX; posX > sideX + moveX - 1; posX--) {
+                for (int row = low; row <= upper; row++) {
                     TiledMapTileLayer.Cell cell = collision.getCell(posX, row);
                     Debug.addCheckedBox(posX, row, 1, 1, Color.RED);
                     if (cell != null) {
@@ -139,24 +135,27 @@ public class ObjectPhysics  {
      */
     private float findCollidingRowsY(float hitboxY, boolean movingUp, float moveY) {
         int left = (int) Math.floor(x);
-        int right = (int) Math.floor(x + width);
+        int right = (int) Math.floor(x + width - 0.00001f);
         int sideY = (int) Math.floor(hitboxY);
         TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
-
-        for(int row = left; row<=right; row++) {
-            if(movingUp) {
-                for (int posY = sideY; posY<sideY + moveY; posY++) {
+        if(movingUp) {
+            for (int posY = sideY; posY < sideY + moveY + 1; posY++) {
+                for (int row = left; row <= right; row++) {
+                    Debug.addCheckedBox(row, posY, 1, 1, Color.BLUE);
                     TiledMapTileLayer.Cell cell = collision.getCell(row, posY);
-                    if(cell != null) {
-                        return posY-hitboxY;
+                    if (cell != null) {
+                        return posY - hitboxY;
                     }
                 }
             }
-            else {
-                for (int posY = sideY; posY>sideY + moveY; posY--) {
+        }
+        else {
+            for (int posY = sideY; posY>sideY + moveY - 1; posY--) {
+                for (int row = left; row <= right; row++) {
+                    Debug.addCheckedBox(row, posY, 1, 1, Color.BLUE);
                     TiledMapTileLayer.Cell cell = collision.getCell(row, posY);
-                    if(cell != null) {
-                        return posY-hitboxY + 1;
+                    if (cell != null) {
+                        return posY - hitboxY + 1;
                     }
                 }
             }
@@ -198,8 +197,15 @@ public class ObjectPhysics  {
     }
 
     public void update(float delta) {
-        heightAcceleration(delta);
+        /*if(inAir) {
+            heightAcceleration(delta);
 
-        //y+=accelerationY;
+            moveY(accelerationY);
+        }
+        else {
+            inAir = true;
+            accelerationY = 0;
+        }*/
+
     }
 }

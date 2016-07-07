@@ -12,9 +12,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class Player extends LivingEntity{
 
     public static final float MOVEMENT_SPEED = 0.15f;
-    PlayerState playerState;
+    private PlayerState playerState;
 
-    boolean lookingRight;
+    private boolean lookingRight;
 
     int spriteFrame;
     float frameTime;
@@ -75,18 +75,17 @@ public class Player extends LivingEntity{
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
             //if(!inAir) {
               //  inAir = true;
-                //jump();
-                moveY(0.05f);
+                jump();
             //}
         }
         if(Gdx.input.isKeyPressed(Input.Keys.S))
         {
-            moveY(-0.05f);
+            moveY(-0.11f);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.C))
+        /*if(Gdx.input.isKeyPressed(Input.Keys.C))
         {
             moveX(-1f);
-        }
+        }*/
     }
 
     public boolean isSmall() {

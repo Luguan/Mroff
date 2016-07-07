@@ -31,7 +31,7 @@ public class LivingEntity extends ObjectPhysics{
     }
 
     public void jump() {
-        accelerationY = 0.11f;
+        moveY(0.2f);
     }
 
     @Override
