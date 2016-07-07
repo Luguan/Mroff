@@ -65,9 +65,13 @@ public class ObjectPhysics  {
         float distanceX = findCollidingRowsY(hitboxX, facingRight, moveX);
 
         if (facingRight) {
-            x += Math.min(distanceX, moveX);
+            if(Math.min(distanceX, moveX)> 0){
+                x += Math.min(distanceX, moveX);
+            }
         } else {
-            x += Math.max(distanceX, moveX);
+            if(Math.max(distanceX, moveX)<0){
+                x += Math.max(distanceX, moveX);
+            }
         }
         System.out.println(distanceX);
     }
@@ -83,17 +87,18 @@ public class ObjectPhysics  {
                 for (int posX = sideX; posX < sideX + moveX; posX++) {
                     TiledMapTileLayer.Cell cell = collision.getCell(posX, row);
                     if (cell != null) {
-                        return posX - sideX;
+                        return posX - hitboxX;
                     }
                 }
             }
-            else
+            else {
                 for (int posX = sideX; posX > sideX + moveX; posX--) {
                     TiledMapTileLayer.Cell cell = collision.getCell(posX, row);
                     if (cell != null) {
-                        return posX - sideX;
+                        return posX - hitboxX + 1;
+                    }
                 }
-                }
+            }
         }
         return moveX;
     }

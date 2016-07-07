@@ -85,7 +85,7 @@ public class Player extends LivingEntity{
         }
         if(Gdx.input.isKeyPressed(Input.Keys.C))
         {
-            moveX(-60);
+            moveX(-1f);
         }
     }
 
