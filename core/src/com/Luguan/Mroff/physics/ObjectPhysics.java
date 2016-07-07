@@ -92,7 +92,7 @@ public class ObjectPhysics  {
                     TiledMapTileLayer.Cell cell = collision.getCell(posX, row);
                     if (cell != null) {
                         return posX - sideX;
-                    }
+                }
                 }
         }
         return moveX;

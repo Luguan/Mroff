@@ -1,6 +1,6 @@
 # Mroff [![Build Status](https://img.shields.io/circleci/project/Luguan/Mroff.svg?style=flat-square)](https://circleci.com/gh/Luguan/Mroff)
 
-Play the web version at our [github pages](http://luguan.github.io/Mroff/game/).
+Play the web version at our [github pages](http://luguan.github.io/Mroff-Web/game/).
 
 ## Get started (IntelliJ)
 ```bash
