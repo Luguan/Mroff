@@ -3,7 +3,6 @@ package com.Luguan.Mroff.physics;
 import com.Luguan.Mroff.Mroff;
 import com.Luguan.Mroff.livingentity.LivingEntity;
 import com.Luguan.Mroff.screen.GameScreen;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,80 +17,95 @@ public class ObjectPhysics  {
     protected float x, y, accelerationY, accelerationX, width, height;
     protected boolean inAir;
 
-
     public ObjectPhysics(CollisionEvent event) {
         this.event = event;
         accelerationY = 0f;
     }
 
-    public void heightAcceleration(float delta) {
-        accelerationY -= 0.2f * delta;
+    public void move() {
+        //moveX();
+        //moveY();
     }
 
-    public void update(float delta) {
-        heightAcceleration(delta);
+    /**
+     * Moves the character on the y-axis
+     * @param moveY The distance to move the character on the y-axis
+     */
+    private void moveY(int moveY) {
+        boolean movingUp;
+        float hitboxY;
 
-        y+=accelerationY;
+        movingUp = moveY > 0;
 
-        handleCollision();
-    }
-
-    private void updateCollsionX(Vector2 collidingTerrain) {
-        if(collidingTerrain.len() != 0) {
-            if(collidingTerrain.x != 0) {
-                x+=collidingTerrain.x;
-            }
+        if(movingUp) {
+            hitboxY = y + height;
+        }
+        else {
+            hitboxY = y;
         }
     }
 
-    private void updateCollisionY(Vector2 collidingTerrain) {
-        if(collidingTerrain.len() != 0) {
-            if(collidingTerrain.y > 0) {
-                inAir = false;
-            }
-            if(collidingTerrain.y != 0) {
-                y += collidingTerrain.y;
-                //System.out.println(collidingTerrain);
-                if(accelerationY<0) {
-                    event.onItemBlockCollision((int)collidingTerrain.x, (int)collidingTerrain.y);
+    /**
+     * Moves the character on the x-axis
+     * @param moveX The distance to move the charactor on the x-axis
+     */
+    public void moveX(float moveX) {
+        boolean facingRight;
+        float hitboxX;
+
+
+        facingRight = moveX > 0;
+
+        if (facingRight) {
+            hitboxX = x + width;
+        } else {
+            hitboxX = x;
+        }
+
+        float distanceX = findCollidingRowsY(hitboxX, facingRight, moveX);
+
+        if (facingRight) {
+            x += Math.min(distanceX, moveX);
+        } else {
+            x += Math.max(distanceX, moveX);
+        }
+        System.out.println(distanceX);
+    }
+
+    private float findCollidingRowsY(float hitboxX, boolean directionRight, float moveX) {
+        int low = (int) Math.floor(y);
+        int upper = (int) Math.floor(y + height);
+        int sideX = (int) Math.floor(hitboxX);
+        TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
+
+        for(int row = low; row<=upper; row++) {
+            if(directionRight) {
+                for (int posX = sideX; posX < sideX + moveX; posX++) {
+                    TiledMapTileLayer.Cell cell = collision.getCell(posX, row);
+                    if (cell != null) {
+                        return posX - sideX;
+                    }
                 }
-                accelerationY = 0;
             }
+            else
+                for (int posX = sideX; posX > sideX + moveX; posX--) {
+                    TiledMapTileLayer.Cell cell = collision.getCell(posX, row);
+                    if (cell != null) {
+                        return posX - sideX;
+                    }
+                }
         }
+        return moveX;
+    }
+
+    private void findCollidingRowsX() {
+        float left = (float) Math.floor(x);
+        float right = (float) Math.floor(x + width);
+
     }
 
     public boolean isCollidingEnemy(LivingEntity livingEntity) {
         return false;
-    }
-
-    public void handleCollision() {
-        Rectangle r1 = getRectangle();
-        TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
-        for(int x =0; x < collision.getWidth(); x++) {
-            for (int y = 0; y < collision.getHeight(); y++) {
-                TiledMapTileLayer.Cell cell = collision.getCell(x, y);
-                if(cell != null) {
-                    Rectangle r2 = new Rectangle(x, y, (collision.getTileWidth() * GameScreen.TILE_SCALE), (collision.getTileHeight() * GameScreen.TILE_SCALE));
-                    Vector2 overlap = intersects(r1, r2);
-                    if (overlap.x != 0 || overlap.y != 0) {
-                        if(Math.abs(overlap.x) > Math.abs(overlap.y)) {
-                            this.y+=overlap.y;
-                            accelerationY = 0;
-                            
-                            if(overlap.y > 0) {
-                                inAir = false;
-                            }
-                        }
-                        else {
-                            this.x+=overlap.x;
-                        }
-                        /*if(cell.getTile().getProperties().containsKey("ItemSpawn")) {
-                            event.onItemBlockCollision(x, y);
-                        }*/
-                    }
-                }
-            }
-        }
     }
 
     public static Vector2 intersects(Rectangle r1, Rectangle r2) {
@@ -115,11 +129,17 @@ public class ObjectPhysics  {
         return result;
     }
 
-    public Rectangle getRectangle() {
-        return new Rectangle(x, y, width, height);
-    }
-
     public interface CollisionEvent {
         void onItemBlockCollision(int x, int y);
+    }
+
+    public void heightAcceleration(float delta) {
+        accelerationY -= 0.2f * delta;
+    }
+
+    public void update(float delta) {
+        heightAcceleration(delta);
+
+        //y+=accelerationY;
     }
 }

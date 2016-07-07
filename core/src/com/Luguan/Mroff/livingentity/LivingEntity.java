@@ -41,6 +41,9 @@ public class LivingEntity extends ObjectPhysics{
         sprite.setY(y);
     }
 
+    /**
+     * @return Position of the character
+     */
     public Vector2 getPosition() {
         return new Vector2(sprite.getX(), sprite.getY());
     }

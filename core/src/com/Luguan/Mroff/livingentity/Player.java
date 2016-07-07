@@ -35,7 +35,6 @@ public class Player extends LivingEntity{
 
     @Override
     public void update(float delta) {
-        System.out.println(lookingRight);
         frameTime+=delta;
         super.update(delta);
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -53,7 +52,7 @@ public class Player extends LivingEntity{
                     getSprite().flip(true, false);
                 }
             }
-            x -= MOVEMENT_SPEED;
+            moveX(-MOVEMENT_SPEED);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.D)) {
             if(!lookingRight) {
@@ -71,13 +70,22 @@ public class Player extends LivingEntity{
                 getSprite().setRegion(Mroff.getInstance().getSheet(0, spriteFrame));
             }
 
-            x += MOVEMENT_SPEED;
+            moveX(MOVEMENT_SPEED);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-            if(!inAir) {
-                inAir = true;
-                jump();
-            }
+            //if(!inAir) {
+              //  inAir = true;
+                //jump();
+                y+=0.2f;
+            //}
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.S))
+        {
+            y-=0.2f;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.C))
+        {
+            moveX(-60);
         }
     }
 

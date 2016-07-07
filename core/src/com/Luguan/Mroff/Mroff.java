@@ -34,7 +34,6 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
     public Mroff(NativeWindowManager windowManager) {
         this.windowManager = windowManager;
         instance = this;
-
     }
 
     public static Mroff getInstance() {
