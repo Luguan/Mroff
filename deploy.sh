@@ -25,7 +25,12 @@ createDesktopDist() {
 
 createWebDist() {
     ./gradlew html:dist
-    git clone git@github.com:Luguan/Mroff.git --branch gh-pages --single-branch gh-pages
+    git clone git@github.com:Luguan/Mroff-Web.git mroff-web
+    cd mroff-web
+
+    git checkout -b temp
+    git branch -d gh-pages
+    git checkout --orphan gh-pages
     cd gh-pages
     git config user.name "Circle CI"
     git config user.email hk.henrik+circle@gmail.com
@@ -36,7 +41,7 @@ createWebDist() {
     mv ${htmlFolder} .
     git add -A
     git commit -m "Build #$(commitCount)"
-    git push
+    git push -u origin gh-pages -f
 }
 
 createDesktopDist
