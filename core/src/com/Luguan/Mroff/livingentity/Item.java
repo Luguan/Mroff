@@ -18,8 +18,6 @@ public class Item extends ObjectPhysics{
     }
 
     public void draw(Batch batch) {
-        batch.begin();
-        batch.draw(item,x,y);
-        batch.end();
+        batch.draw(item, x, y);
     }
 }

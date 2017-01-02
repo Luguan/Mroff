@@ -13,6 +13,8 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -124,6 +126,8 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     public void render(float delta) {
         update(delta);
 
+        Batch batch = renderer.getBatch();
+
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -132,16 +136,18 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         renderer.setView(cam);
         renderer.render();
 
-        character.draw(renderer.getBatch());
+        batch.begin();
+        character.draw(batch);
 
         for (Item item : items) {
-            item.draw(renderer.getBatch());
+            item.draw(batch);
         }
+
+        batch.end();
 
         if (pauseMenu != null) {
             pauseMenu.render(delta);
         }
-
 
         Debug.setEnabled(debugGUI.isPhysicsDebugEnabled());
         if (debugGUI.isPhysicsDebugEnabled()) {
