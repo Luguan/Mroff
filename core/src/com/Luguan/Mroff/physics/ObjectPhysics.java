@@ -55,28 +55,14 @@ public class ObjectPhysics  {
             // Could not move at all
             return MovementResult.FAILURE;
         }
-
-        if(movingUp) {
-            if (canMoveY < requestedMoveY) {
-                // Could not move the full distance, but moved a part of the requested distance
-                y += canMoveY;
-                return MovementResult.PARTIAL;
-            } else {
-                // Could move the full requested distance
-                y += requestedMoveY;
-                return MovementResult.SUCCESS;
-            }
-        }
-        else {
-            if (canMoveY > requestedMoveY) {
-                // Could not move the full distance, but moved a part of the requested distance
-                y += canMoveY;
-                return MovementResult.PARTIAL;
-            } else {
-                // Could move the full requested distance
-                y += requestedMoveY;
-                return MovementResult.SUCCESS;
-            }
+        else if (Math.abs(canMoveY) < Math.abs(requestedMoveY)) {
+            // Could not move the full distance, but moved a part of the requested distance
+            y += canMoveY;
+            return MovementResult.PARTIAL;
+        } else {
+            // Could move the full requested distance
+            y += requestedMoveY;
+            return MovementResult.SUCCESS;
         }
     }
 
@@ -229,6 +215,7 @@ public class ObjectPhysics  {
             if (movingDown && movementResult == MovementResult.PARTIAL || movementResult == MovementResult.FAILURE) {
                 // If we where blocked while moving downwards, we can assume that we hit the floor.
                 inAir = false;
+                accelerationY = 0.0f;
             }
         }
     }
