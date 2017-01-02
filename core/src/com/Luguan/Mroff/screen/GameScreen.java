@@ -140,6 +140,19 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
             pauseMenu.render(delta);
         }
 
+
+        Debug.setEnabled(debugGUI.isPhysicsDebugEnabled());
+        if (debugGUI.isPhysicsDebugEnabled()) {
+            drawDebugOverlay();
+        }
+
+
+
+        debugGUI.draw();
+
+    }
+
+    private void drawDebugOverlay() {
         ShapeRenderer shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
         shapeRenderer.setProjectionMatrix(cam.combined);
@@ -149,7 +162,6 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
             shapeRenderer.setColor(box.color);
             shapeRenderer.rect(box.x, box.y, box.width, box.height);
         }
-
         TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
 
         for (int x = 0; x < collision.getWidth(); x++) {
@@ -172,14 +184,9 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
                 3/4f, 1);
 
 
-
         Debug.checkedBoxes.clear();
 
-
         shapeRenderer.end();
-
-        debugGUI.draw();
-
     }
 
     @Override

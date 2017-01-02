@@ -8,9 +8,19 @@ import java.util.List;
 public class Debug {
 
     public static List<Vector> checkedBoxes = new ArrayList<Vector>();
+    private static boolean isEnabled;
 
     public static void addCheckedBox(float x, float y, float width, float height, Color color) {
-        checkedBoxes.add(new Vector(x, y, width, height, color));
+        if (isEnabled) {
+            checkedBoxes.add(new Vector(x, y, width, height, color));
+        }
+    }
+
+    public static void setEnabled(boolean enabled) {
+        if (!Debug.isEnabled && enabled) {
+            checkedBoxes.clear();
+        }
+        Debug.isEnabled = enabled;
     }
 
     public static class Vector {
