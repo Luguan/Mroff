@@ -69,6 +69,8 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
             return;
         }
 
+        character.setFlying(debugGUI.isFlightModeEnabled());
+
         character.update(delta);
         for (Item item : items) {
             item.update(delta);

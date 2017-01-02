@@ -18,6 +18,7 @@ public class ObjectPhysics  {
     private  CollisionEvent event;
     protected float x, y, accelerationY, accelerationX, width, height;
     protected boolean inAir;
+    protected boolean isAffectedByGravity = false;
 
     public ObjectPhysics(CollisionEvent event) {
         this.event = event;

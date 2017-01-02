@@ -16,8 +16,9 @@ public class Player extends LivingEntity{
 
     private boolean lookingRight;
 
-    int spriteFrame;
-    float frameTime;
+    private int spriteFrame;
+    private float frameTime;
+    private boolean isFlying;
 
     public Player(CollisionEvent event) {
         super(new Sprite(Mroff.getInstance().getSheet(0, 0)), event);
@@ -29,6 +30,8 @@ public class Player extends LivingEntity{
         width = 3/4f;
         height = 9/10f;
         getSprite().setSize(width,height);
+
+        this.setFlying(false);
     }
 
 
@@ -37,6 +40,47 @@ public class Player extends LivingEntity{
     public void update(float delta) {
         frameTime+=delta;
         super.update(delta);
+        moveSideways();
+        if (isFlying) {
+            moveVerticallyFlight();
+        } else {
+            this.moveVertically();
+        }
+
+        /*if(Gdx.input.isKeyPressed(Input.Keys.C))
+        {
+            moveX(-1f);
+        }*/
+    }
+
+    /**
+     * Used for moving up and down while in flight mode
+     */
+    private void moveVerticallyFlight() {
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+            moveY(.2f);
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.S))
+        {
+            moveY(-.2f);
+        }
+    }
+
+    /**
+     * Used for moving up (and down?) in non-flight mode
+     */
+    private void moveVertically() {
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+            if(!inAir) {
+                inAir = true;
+                jump();
+            }
+        }
+
+    }
+
+    private void moveSideways() {
         if(Gdx.input.isKeyPressed(Input.Keys.A)) {
             lookingRight=false;
             if(frameTime>0.2f) {
@@ -72,24 +116,14 @@ public class Player extends LivingEntity{
 
             moveX(MOVEMENT_SPEED);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-            //if(!inAir) {
-              //  inAir = true;
-                jump();
-            //}
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.S))
-        {
-            moveY(-0.11f);
-        }
-        /*if(Gdx.input.isKeyPressed(Input.Keys.C))
-        {
-            moveX(-1f);
-        }*/
     }
 
     public boolean isSmall() {
         return playerState == PlayerState.SMALL;
     }
 
+    public void setFlying(boolean isFlying) {
+        this.isFlying = isFlying;
+        this.isAffectedByGravity = false;
+    }
 }
