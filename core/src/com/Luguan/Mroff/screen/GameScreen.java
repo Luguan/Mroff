@@ -189,7 +189,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         shapeRenderer.setColor(Color.MAGENTA);
         shapeRenderer.rect(character.getPosition().x,
                 character.getPosition().y,
-                3/4f, 1);
+                character.getWidth(), character.getHeight());
 
 
         Debug.checkedBoxes.clear();

@@ -15,6 +15,14 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class ObjectPhysics  {
 
+    public float getHeight() {
+        return height;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
     enum MovementResult {
         SUCCESS, PARTIAL, FAILURE
     }
