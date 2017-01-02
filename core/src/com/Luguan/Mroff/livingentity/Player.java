@@ -73,7 +73,6 @@ public class Player extends LivingEntity{
     private void moveVertically() {
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {
             if(!inAir) {
-                inAir = true;
                 jump();
             }
         }
@@ -124,6 +123,6 @@ public class Player extends LivingEntity{
 
     public void setFlying(boolean isFlying) {
         this.isFlying = isFlying;
-        this.isAffectedByGravity = false;
+        this.isAffectedByGravity = !isFlying;
     }
 }

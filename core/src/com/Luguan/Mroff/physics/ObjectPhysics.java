@@ -15,6 +15,10 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class ObjectPhysics  {
 
+    enum MovementResult {
+        SUCCESS, PARTIAL, FAILURE
+    }
+
     private  CollisionEvent event;
     protected float x, y, accelerationY, accelerationX, width, height;
     protected boolean inAir;
@@ -28,13 +32,13 @@ public class ObjectPhysics  {
 
     /**
      * Moves the character on the y-axis
-     * @param moveY The distance to move the character on the y-axis
+     * @param requestedMoveY The distance to move the character on the y-axis
      */
-    public void moveY(float moveY) {
+    public MovementResult moveY(float requestedMoveY) {
         boolean movingUp;
         float hitboxY;
 
-        movingUp = moveY > 0;
+        movingUp = requestedMoveY > 0;
 
         if(movingUp) {
             hitboxY = y + height;
@@ -43,16 +47,35 @@ public class ObjectPhysics  {
             hitboxY = y;
         }
 
-        float distanceY = findCollidingRowsY(hitboxY,movingUp,moveY);
+        float canMoveY = findCollidingRowsY(hitboxY, movingUp, requestedMoveY);
+
+        float distanceToMove = Math.min(Math.abs(canMoveY), Math.abs(requestedMoveY));
+
+        if (distanceToMove <= 0) {
+            // Could not move at all
+            return MovementResult.FAILURE;
+        }
 
         if(movingUp) {
-            if(Math.min(distanceY, moveY) > 0) {
-                y += Math.min(distanceY, moveY);
+            if (canMoveY < requestedMoveY) {
+                // Could not move the full distance, but moved a part of the requested distance
+                y += canMoveY;
+                return MovementResult.PARTIAL;
+            } else {
+                // Could move the full requested distance
+                y += requestedMoveY;
+                return MovementResult.SUCCESS;
             }
         }
         else {
-            if(Math.max(distanceY,moveY) < 0) {
-                y += Math.max(distanceY,moveY);
+            if (canMoveY > requestedMoveY) {
+                // Could not move the full distance, but moved a part of the requested distance
+                y += canMoveY;
+                return MovementResult.PARTIAL;
+            } else {
+                // Could move the full requested distance
+                y += requestedMoveY;
+                return MovementResult.SUCCESS;
             }
         }
     }
@@ -197,15 +220,16 @@ public class ObjectPhysics  {
     }
 
     public void update(float delta) {
-        /*if(inAir) {
+        if (isAffectedByGravity) {
             heightAcceleration(delta);
+            MovementResult movementResult = moveY(accelerationY);
 
-            moveY(accelerationY);
+            boolean movingDown = accelerationY < 0;
+
+            if (movingDown && movementResult == MovementResult.PARTIAL || movementResult == MovementResult.FAILURE) {
+                // If we where blocked while moving downwards, we can assume that we hit the floor.
+                inAir = false;
+            }
         }
-        else {
-            inAir = true;
-            accelerationY = 0;
-        }*/
-
     }
 }
