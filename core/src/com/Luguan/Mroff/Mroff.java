@@ -5,6 +5,7 @@ import com.Luguan.Mroff.screen.GameScreen;
 import com.Luguan.Mroff.screen.LoadingScreen;
 import com.Luguan.Mroff.screen.MenuScreen;
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Sound;
@@ -62,8 +63,12 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
         assetManager.load("skins/uiskin.json", Skin.class);
 
         // only needed once
-        assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
-        assetManager.load("maps/Level2.tmx", TiledMap.class);
+        TmxMapLoader loader = new TmxMapLoader(new InternalFileHandleResolver());
+        assetManager.setLoader(TiledMap.class, loader);
+        TmxMapLoader.Parameters params = new TmxMapLoader.Parameters();
+        params.textureMinFilter = Texture.TextureFilter.Linear;
+        params.textureMagFilter= Texture.TextureFilter.Nearest;
+        assetManager.load("maps/Level2.tmx", TiledMap.class, params);
     }
 
     @Override

@@ -21,9 +21,7 @@ public class LivingEntity extends ObjectPhysics{
     }
 
     public void draw(Batch batch) {
-        batch.begin();
         sprite.draw(batch);
-        batch.end();
     }
 
     public void jump() {
