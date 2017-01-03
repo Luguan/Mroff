@@ -24,6 +24,10 @@ public class ObjectPhysics  {
     protected boolean inAir;
     protected boolean isAffectedByGravity = false;
 
+
+    public ObjectPhysics() {
+    }
+
     public ObjectPhysics(CollisionEvent event) {
         this.event = event;
         accelerationY = 0f;
@@ -147,12 +151,18 @@ public class ObjectPhysics  {
         int right = (int) Math.floor(x + width - 0.00001f);
         int sideY = (int) Math.floor(hitboxY);
         TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
+        TiledMapTileLayer itemBlocks = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("ItemBlocks");
         if(movingUp) {
             for (int posY = sideY; posY < sideY + moveY + 1; posY++) {
                 for (int row = left; row <= right; row++) {
                     Debug.addCheckedBox(row, posY, 1, 1, Color.BLUE);
-                    TiledMapTileLayer.Cell cell = collision.getCell(row, posY);
-                    if (cell != null) {
+                    TiledMapTileLayer.Cell collisionCell = collision.getCell(row, posY);
+                    TiledMapTileLayer.Cell itemBlockCell = itemBlocks.getCell(row, posY);
+                    if (collisionCell != null) {
+                        return posY - hitboxY;
+                    }
+                    else if (itemBlockCell != null) {
+                        event.onItemBlockCollision(row, posY);
                         return posY - hitboxY;
                     }
                 }
@@ -212,7 +222,9 @@ public class ObjectPhysics  {
 
             boolean movingDown = accelerationY < 0;
 
-            if (movingDown && movementResult == MovementResult.PARTIAL || movementResult == MovementResult.FAILURE) {
+            if (!movingDown && movementResult == MovementResult.PARTIAL)
+                accelerationY = 0.0f;
+            if (movingDown && (movementResult == MovementResult.PARTIAL || movementResult == MovementResult.FAILURE)) {
                 // If we where blocked while moving downwards, we can assume that we hit the floor.
                 inAir = false;
                 accelerationY = 0.0f;

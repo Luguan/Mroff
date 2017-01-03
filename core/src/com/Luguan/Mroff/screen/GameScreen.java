@@ -13,6 +13,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -222,6 +223,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     @Override
     public void onItemBlockCollision(int x, int y) {
         System.out.println("coll");
+        items.add(new Item());
     }
 
     public Player getCharacter() {
