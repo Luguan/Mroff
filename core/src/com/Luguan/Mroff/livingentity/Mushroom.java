@@ -30,8 +30,6 @@ public class Mushroom extends Item{
     }
 
     public void draw(Batch batch) {
-        batch.begin();
         batch.draw(item, x , y);
-        batch.end();
     }
 }
