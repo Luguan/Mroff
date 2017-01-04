@@ -120,14 +120,20 @@ public class ObjectPhysics  {
         int upper = (int) Math.floor(y + height - 0.00001f);
         int sideX = (int) Math.floor(hitboxX);
         TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
+        TiledMapTileLayer itemBlocks = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("ItemBlocks");
 
         Debug.addCheckedBox(hitboxX, 0, .001f, 1000, Color.BLUE);
         if(directionRight) {
             for (int posX = sideX; posX < sideX + moveX + 1; posX++) {
                 for (int row = low; row <= upper; row++){
                     Debug.addCheckedBox(posX, row, 1, 1, Color.RED);
-                    TiledMapTileLayer.Cell cell = collision.getCell(posX, row);
-                    if (cell != null) {
+                    TiledMapTileLayer.Cell collisionCell = collision.getCell(row, posX);
+                    TiledMapTileLayer.Cell itemBlockCell = itemBlocks.getCell(row, posX);
+                    if (collisionCell != null) {
+                        return posX - hitboxX;
+                    }
+                    else if (itemBlockCell != null) {
+                        event.onItemBlockCollision(row, posX);
                         return posX - hitboxX;
                     }
                 }
@@ -136,9 +142,14 @@ public class ObjectPhysics  {
         else {
             for (int posX = sideX; posX > sideX + moveX - 1; posX--) {
                 for (int row = low; row <= upper; row++) {
-                    TiledMapTileLayer.Cell cell = collision.getCell(posX, row);
                     Debug.addCheckedBox(posX, row, 1, 1, Color.RED);
-                    if (cell != null) {
+                    TiledMapTileLayer.Cell collisionCell = collision.getCell(row, posX);
+                    TiledMapTileLayer.Cell itemBlockCell = itemBlocks.getCell(row, posX);
+                    if (collisionCell != null) {
+                        return posX - hitboxX + 1;
+                    }
+                    else if (itemBlockCell != null) {
+                        event.onItemBlockCollision(row, posX);
                         return posX - hitboxX + 1;
                     }
                 }
@@ -160,6 +171,7 @@ public class ObjectPhysics  {
         int sideY = (int) Math.floor(hitboxY);
         TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
         TiledMapTileLayer itemBlocks = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("ItemBlocks");
+
         if(movingUp) {
             for (int posY = sideY; posY < sideY + moveY + 1; posY++) {
                 for (int row = left; row <= right; row++) {
@@ -180,8 +192,13 @@ public class ObjectPhysics  {
             for (int posY = sideY; posY>sideY + moveY - 1; posY--) {
                 for (int row = left; row <= right; row++) {
                     Debug.addCheckedBox(row, posY, 1, 1, Color.BLUE);
-                    TiledMapTileLayer.Cell cell = collision.getCell(row, posY);
-                    if (cell != null) {
+                    TiledMapTileLayer.Cell collisionCell = collision.getCell(row, posY);
+                    TiledMapTileLayer.Cell itemBlockCell = itemBlocks.getCell(row, posY);
+                    if (collisionCell != null) {
+                        return posY - hitboxY + 1;
+                    }
+                    else if (itemBlockCell != null) {
+                        event.onItemBlockCollision(row, posY);
                         return posY - hitboxY + 1;
                     }
                 }

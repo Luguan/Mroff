@@ -228,7 +228,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     @Override
     public void onItemBlockCollision(int x, int y) {
         System.out.println("coll");
-        items.add(new Mushroom(x, y));
+        //items.add(new Mushroom(x, y));
     }
 
     public Player getCharacter() {
