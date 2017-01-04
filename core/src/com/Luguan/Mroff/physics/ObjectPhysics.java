@@ -49,6 +49,7 @@ public class ObjectPhysics  {
     public MovementResult moveY(float requestedMoveY) {
         boolean movingUp;
         float hitboxY;
+        collidingblock block;
 
         movingUp = requestedMoveY > 0;
 
@@ -59,17 +60,18 @@ public class ObjectPhysics  {
             hitboxY = y;
         }
 
-        float canMoveY = findCollidingRowsY(hitboxY, movingUp, requestedMoveY);
+        block = findCollidingRowsY(hitboxY, movingUp, requestedMoveY);
+        System.out.println(block.blocktype());
 
-        float distanceToMove = Math.min(Math.abs(canMoveY), Math.abs(requestedMoveY));
+        float distanceToMove = Math.min(Math.abs(block.distance()), Math.abs(requestedMoveY));
 
         if (distanceToMove <= 0) {
             // Could not move at all
             return MovementResult.FAILURE;
         }
-        else if (Math.abs(canMoveY) < Math.abs(requestedMoveY)) {
+        else if (Math.abs(block.distance()) < Math.abs(requestedMoveY)) {
             // Could not move the full distance, but moved a part of the requested distance
-            y += canMoveY;
+            y += block.distance();
             return MovementResult.PARTIAL;
         } else {
             // Could move the full requested distance
@@ -85,6 +87,7 @@ public class ObjectPhysics  {
     public void moveX(float moveX) {
         boolean facingRight;
         float hitboxX;
+        collidingblock block;
 
 
         facingRight = moveX > 0;
@@ -95,15 +98,16 @@ public class ObjectPhysics  {
             hitboxX = x;
         }
 
-        float distanceX = findCollidingRowsX(hitboxX, facingRight, moveX);
+        block = findCollidingRowsX(hitboxX, facingRight, moveX);
+        System.out.println(block.blocktype());
 
         if (facingRight) {
-            if(Math.min(distanceX, moveX) > 0){
-                x += Math.min(distanceX, moveX);
+            if(Math.min(block.distance(), moveX) > 0){
+                x += Math.min(block.distance(), moveX);
             }
         } else {
-            if(Math.max(distanceX, moveX) < 0){
-                x += Math.max(distanceX, moveX);
+            if(Math.max(block.distance(), moveX) < 0){
+                x += Math.max(block.distance(), moveX);
             }
         }
     }
@@ -115,7 +119,7 @@ public class ObjectPhysics  {
      * @param moveX the distance to check for collision
      * @return The distance that the character is able to move
      */
-    private float findCollidingRowsX(float hitboxX, boolean directionRight, float moveX) {
+    private collidingblock findCollidingRowsX(float hitboxX, boolean directionRight, float moveX) {
         int low = (int) Math.floor(y);
         int upper = (int) Math.floor(y + height - 0.00001f);
         int sideX = (int) Math.floor(hitboxX);
@@ -130,10 +134,10 @@ public class ObjectPhysics  {
                     TiledMapTileLayer.Cell collisionCell = collision.getCell(posX, row);
                     TiledMapTileLayer.Cell itemBlockCell = itemBlocks.getCell(posX, row);
                     if (collisionCell != null) {
-                        return posX - hitboxX;
+                        return new collidingblock(posX - hitboxX, "map");
                     }
                     else if (itemBlockCell != null) {
-                        return posX - hitboxX;
+                        return new collidingblock(posX - hitboxX, "itemblock");
                     }
                 }
             }
@@ -145,15 +149,15 @@ public class ObjectPhysics  {
                     TiledMapTileLayer.Cell collisionCell = collision.getCell(posX, row);
                     TiledMapTileLayer.Cell itemBlockCell = itemBlocks.getCell(posX, row);
                     if (collisionCell != null) {
-                        return posX - hitboxX + 1;
+                        return new collidingblock(posX - hitboxX + 1, "map");
                     }
                     else if (itemBlockCell != null) {
-                        return posX - hitboxX + 1;
+                        return new collidingblock(posX - hitboxX + 1, "itemblock");
                     }
                 }
             }
         }
-        return moveX;
+        return new collidingblock(moveX);
     }
 
     /**
@@ -163,7 +167,7 @@ public class ObjectPhysics  {
      * @param moveY The distance to check for collision
      * @return The distance that the character is able to move
      */
-    private float findCollidingRowsY(float hitboxY, boolean movingUp, float moveY) {
+    private collidingblock findCollidingRowsY(float hitboxY, boolean movingUp, float moveY) {
         int left = (int) Math.floor(x);
         int right = (int) Math.floor(x + width - 0.00001f);
         int sideY = (int) Math.floor(hitboxY);
@@ -177,11 +181,11 @@ public class ObjectPhysics  {
                     TiledMapTileLayer.Cell collisionCell = collision.getCell(row, posY);
                     TiledMapTileLayer.Cell itemBlockCell = itemBlocks.getCell(row, posY);
                     if (collisionCell != null) {
-                        return posY - hitboxY;
+                        return new collidingblock(posY - hitboxY, "map");
                     }
                     else if (itemBlockCell != null) {
                         event.onItemBlockCollision(row, posY);
-                        return posY - hitboxY;
+                        return new collidingblock(posY - hitboxY, "itemblock");
                     }
                 }
             }
@@ -193,16 +197,16 @@ public class ObjectPhysics  {
                     TiledMapTileLayer.Cell collisionCell = collision.getCell(row, posY);
                     TiledMapTileLayer.Cell itemBlockCell = itemBlocks.getCell(row, posY);
                     if (collisionCell != null) {
-                        return posY - hitboxY + 1;
+                        return new collidingblock(posY - hitboxY + 1, "map");
                     }
                     else if (itemBlockCell != null) {
                         event.onItemBlockCollision(row, posY);
-                        return posY - hitboxY + 1;
+                        return new collidingblock(posY - hitboxY + 1, "itemblock");
                     }
                 }
             }
         }
-        return moveY;
+        return new collidingblock(moveY);
     }
 
     public boolean isCollidingEnemy(LivingEntity livingEntity) {
@@ -253,5 +257,32 @@ public class ObjectPhysics  {
                 accelerationY = 0.0f;
             }
         }
+    }
+}
+
+class collidingblock {
+
+    private float f;
+    private String s;
+    private Side side;
+
+    public collidingblock(float position) {
+        this.f = position;
+    }
+
+    public collidingblock(float f, String s) {
+        this.f = f;
+        this.s = s;
+    }
+
+    public float distance() {
+        return f;
+    }
+
+    public String blocktype() {
+        if(s != null)
+            return s;
+        else
+            return "";
     }
 }
