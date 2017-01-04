@@ -3,6 +3,7 @@ package com.Luguan.Mroff.screen;
 import com.Luguan.Mroff.Mroff;
 import com.Luguan.Mroff.gui.DebugGUI;
 import com.Luguan.Mroff.livingentity.Item;
+import com.Luguan.Mroff.livingentity.Mushroom;
 import com.Luguan.Mroff.livingentity.Player;
 import com.Luguan.Mroff.physics.ObjectPhysics;
 import com.Luguan.Mroff.util.Debug;
@@ -227,7 +228,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     @Override
     public void onItemBlockCollision(int x, int y) {
         System.out.println("coll");
-        items.add(new Item());
+        items.add(new Mushroom(x, y));
     }
 
     public Player getCharacter() {

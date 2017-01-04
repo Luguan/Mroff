@@ -1,7 +1,6 @@
 package com.Luguan.Mroff.livingentity;
 
 import com.Luguan.Mroff.Mroff;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -10,9 +9,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class Mushroom extends Item{
 
-    private Texture item;
+    private Sprite sprite;
 
-    private int x, y;
+
 
     public Mushroom(int x, int y) {
         this.x = x;
@@ -20,8 +19,11 @@ public class Mushroom extends Item{
         createSprite(x, y);
     }
 
-    private Sprite createSprite(int x, int y) {
-        return new Sprite(Mroff.getInstance().getTexture("items/Mushroom.png"), x, y);
+    private void createSprite(int x, int y) {
+        sprite = new Sprite(Mroff.getInstance().getTexture("items/Mushroom"));
+        sprite.setSize(1.0f, 1.0f);
+        sprite.setX(x);
+        sprite.setY(y);
     }
 
     @Override
@@ -30,6 +32,6 @@ public class Mushroom extends Item{
     }
 
     public void draw(Batch batch) {
-        batch.draw(item, x , y);
+        sprite.draw(batch);
     }
 }
