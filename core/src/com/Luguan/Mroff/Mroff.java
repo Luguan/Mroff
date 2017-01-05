@@ -69,6 +69,7 @@ public class Mroff extends Game implements MenuScreen.MenuAction {
         params.textureMinFilter = Texture.TextureFilter.Linear;
         params.textureMagFilter= Texture.TextureFilter.Nearest;
         assetManager.load("maps/Level2.tmx", TiledMap.class, params);
+        assetManager.load("maps/Level1.tmx", TiledMap.class, params);
     }
 
     @Override

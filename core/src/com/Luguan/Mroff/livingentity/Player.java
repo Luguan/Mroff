@@ -1,6 +1,7 @@
 package com.Luguan.Mroff.livingentity;
 
 import com.Luguan.Mroff.Mroff;
+import com.Luguan.Mroff.game.Map;
 import com.Luguan.Mroff.physics.PlayerState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -20,8 +21,8 @@ public class Player extends LivingEntity{
     private float frameTime;
     private boolean isFlying;
 
-    public Player(CollisionEvent event) {
-        super(new Sprite(Mroff.getInstance().getSheet(0, 0)), event);
+    public Player(Map map, CollisionEvent event) {
+        super(map, new Sprite(Mroff.getInstance().getSheet(0, 0)), event);
 
         spriteFrame = 0;
 

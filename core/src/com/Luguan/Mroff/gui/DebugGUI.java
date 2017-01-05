@@ -77,7 +77,7 @@ public class DebugGUI {
         sb.append("[K] Kill all enemies\n");
         sb.append("[R] Restart game\n");
         sb.append("FPS: ").append(Gdx.graphics.getFramesPerSecond()).append("\n");
-        Vector2 position = ((GameScreen) Mroff.getInstance().getScreen()).getCharacter().getPosition();
+        Vector2 position = ((GameScreen) Mroff.getInstance().getScreen()).getGame().getCharacter().getPosition();
         sb.append("X: ").append(position.x).append(", Y: ").append(position.y);
 
         SpriteBatch batch = new SpriteBatch();
