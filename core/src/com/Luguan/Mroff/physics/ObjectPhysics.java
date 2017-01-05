@@ -4,11 +4,15 @@ import com.Luguan.Mroff.Mroff;
 import com.Luguan.Mroff.livingentity.LivingEntity;
 import com.Luguan.Mroff.screen.GameScreen;
 import com.Luguan.Mroff.util.Debug;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+
+import java.util.List;
 
 /**
  * Created by Lukas on 6/14/2015.
@@ -49,7 +53,7 @@ public class ObjectPhysics  {
     public MovementResult moveY(float requestedMoveY) {
         boolean movingUp;
         float hitboxY;
-        collidingblock block;
+        CollidingBlock block;
 
         movingUp = requestedMoveY > 0;
 
@@ -61,7 +65,7 @@ public class ObjectPhysics  {
         }
 
         block = findCollidingRowsY(hitboxY, movingUp, requestedMoveY);
-        System.out.println(block.blocktype());
+
 
         float distanceToMove = Math.min(Math.abs(block.distance()), Math.abs(requestedMoveY));
 
@@ -72,6 +76,7 @@ public class ObjectPhysics  {
         else if (Math.abs(block.distance()) < Math.abs(requestedMoveY)) {
             // Could not move the full distance, but moved a part of the requested distance
             y += block.distance();
+            System.out.println(block.BlockType());
             return MovementResult.PARTIAL;
         } else {
             // Could move the full requested distance
@@ -86,20 +91,20 @@ public class ObjectPhysics  {
      */
     public void moveX(float moveX) {
         boolean facingRight;
-        float hitboxX;
-        collidingblock block;
+        float hitBoxX;
+        CollidingBlock block;
 
 
         facingRight = moveX > 0;
 
         if (facingRight) {
-            hitboxX = x + width;
+            hitBoxX = x + width;
         } else {
-            hitboxX = x;
+            hitBoxX = x;
         }
 
-        block = findCollidingRowsX(hitboxX, facingRight, moveX);
-        System.out.println(block.blocktype());
+        block = findCollidingRowsX(hitBoxX, facingRight, moveX);
+        System.out.println(block.BlockType());
 
         if (facingRight) {
             if(Math.min(block.distance(), moveX) > 0){
@@ -119,7 +124,7 @@ public class ObjectPhysics  {
      * @param moveX the distance to check for collision
      * @return The distance that the character is able to move
      */
-    private collidingblock findCollidingRowsX(float hitboxX, boolean directionRight, float moveX) {
+    private CollidingBlock findCollidingRowsX(float hitboxX, boolean directionRight, float moveX) {
         int low = (int) Math.floor(y);
         int upper = (int) Math.floor(y + height - 0.00001f);
         int sideX = (int) Math.floor(hitboxX);
@@ -134,10 +139,10 @@ public class ObjectPhysics  {
                     TiledMapTileLayer.Cell collisionCell = collision.getCell(posX, row);
                     TiledMapTileLayer.Cell itemBlockCell = itemBlocks.getCell(posX, row);
                     if (collisionCell != null) {
-                        return new collidingblock(posX - hitboxX, "map");
+                        return new CollidingBlock(posX - hitboxX, "map");
                     }
                     else if (itemBlockCell != null) {
-                        return new collidingblock(posX - hitboxX, "itemblock");
+                        return new CollidingBlock(posX - hitboxX, "itemblock");
                     }
                 }
             }
@@ -149,15 +154,15 @@ public class ObjectPhysics  {
                     TiledMapTileLayer.Cell collisionCell = collision.getCell(posX, row);
                     TiledMapTileLayer.Cell itemBlockCell = itemBlocks.getCell(posX, row);
                     if (collisionCell != null) {
-                        return new collidingblock(posX - hitboxX + 1, "map");
+                        return new CollidingBlock(posX - hitboxX + 1, "map");
                     }
                     else if (itemBlockCell != null) {
-                        return new collidingblock(posX - hitboxX + 1, "itemblock");
+                        return new CollidingBlock(posX - hitboxX + 1, "itemblock");
                     }
                 }
             }
         }
-        return new collidingblock(moveX);
+        return new CollidingBlock(moveX);
     }
 
     /**
@@ -167,12 +172,13 @@ public class ObjectPhysics  {
      * @param moveY The distance to check for collision
      * @return The distance that the character is able to move
      */
-    private collidingblock findCollidingRowsY(float hitboxY, boolean movingUp, float moveY) {
+    private CollidingBlock findCollidingRowsY(float hitboxY, boolean movingUp, float moveY) {
         int left = (int) Math.floor(x);
         int right = (int) Math.floor(x + width - 0.00001f);
         int sideY = (int) Math.floor(hitboxY);
         TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
         TiledMapTileLayer itemBlocks = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("ItemBlocks");
+        //TiledMapTileLayer itemBlocks = Mroff.getInstance().getMap("level2").getLayers().get("Object Layer 1").getObjects();
 
         if(movingUp) {
             for (int posY = sideY; posY < sideY + moveY + 1; posY++) {
@@ -181,11 +187,11 @@ public class ObjectPhysics  {
                     TiledMapTileLayer.Cell collisionCell = collision.getCell(row, posY);
                     TiledMapTileLayer.Cell itemBlockCell = itemBlocks.getCell(row, posY);
                     if (collisionCell != null) {
-                        return new collidingblock(posY - hitboxY, "map");
+                        return new CollidingBlock(posY - hitboxY, "map");
                     }
                     else if (itemBlockCell != null) {
                         event.onItemBlockCollision(row, posY);
-                        return new collidingblock(posY - hitboxY, "itemblock");
+                        return new CollidingBlock(posY - hitboxY, "itemblock");
                     }
                 }
             }
@@ -197,16 +203,16 @@ public class ObjectPhysics  {
                     TiledMapTileLayer.Cell collisionCell = collision.getCell(row, posY);
                     TiledMapTileLayer.Cell itemBlockCell = itemBlocks.getCell(row, posY);
                     if (collisionCell != null) {
-                        return new collidingblock(posY - hitboxY + 1, "map");
+                        return new CollidingBlock(posY - hitboxY + 1, "map");
                     }
                     else if (itemBlockCell != null) {
                         event.onItemBlockCollision(row, posY);
-                        return new collidingblock(posY - hitboxY + 1, "itemblock");
+                        return new CollidingBlock(posY - hitboxY + 1, "itemblock");
                     }
                 }
             }
         }
-        return new collidingblock(moveY);
+        return new CollidingBlock(moveY);
     }
 
     public boolean isCollidingEnemy(LivingEntity livingEntity) {
@@ -260,29 +266,29 @@ public class ObjectPhysics  {
     }
 }
 
-class collidingblock {
+class CollidingBlock {
 
     private float f;
-    private String s;
+    private String blockName;
     private Side side;
 
-    public collidingblock(float position) {
+    public CollidingBlock(float position) {
         this.f = position;
     }
 
-    public collidingblock(float f, String s) {
+    public CollidingBlock(float f, String blockName) {
         this.f = f;
-        this.s = s;
+        this.blockName = blockName;
     }
 
     public float distance() {
         return f;
     }
 
-    public String blocktype() {
-        if(s != null)
-            return s;
+    public String BlockType() {
+        if (blockName != null)
+            return blockName;
         else
-            return "";
+            return null;
     }
 }
