@@ -1,6 +1,7 @@
 package com.Luguan.Mroff.livingentity;
 
 import com.Luguan.Mroff.Mroff;
+import com.Luguan.Mroff.game.Map;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -13,7 +14,8 @@ public class Mushroom extends Item{
 
 
 
-    public Mushroom(int x, int y) {
+    public Mushroom(Map map, int x, int y) {
+        super(map);
         this.x = x;
         this.y = y;
         createSprite(x, y);

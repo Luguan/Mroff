@@ -1,6 +1,7 @@
 package com.Luguan.Mroff.physics;
 
 import com.Luguan.Mroff.Mroff;
+import com.Luguan.Mroff.game.Map;
 import com.Luguan.Mroff.livingentity.LivingEntity;
 import com.Luguan.Mroff.screen.GameScreen;
 import com.Luguan.Mroff.util.Debug;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.math.Vector2;
  * Created by Lukas on 6/14/2015.
  */
 public class ObjectPhysics  {
+
+    private Map map;
 
     public float getHeight() {
         return height;
@@ -33,10 +36,12 @@ public class ObjectPhysics  {
     protected boolean isAffectedByGravity = false;
 
 
-    public ObjectPhysics() {
+    public ObjectPhysics(Map map) {
+        this.map = map;
     }
 
-    public ObjectPhysics(CollisionEvent event) {
+    public ObjectPhysics(Map map, CollisionEvent event) {
+        this.map = map;
         this.event = event;
         accelerationY = 0f;
     }
@@ -123,8 +128,8 @@ public class ObjectPhysics  {
         int low = (int) Math.floor(y);
         int upper = (int) Math.floor(y + height - 0.00001f);
         int sideX = (int) Math.floor(hitboxX);
-        TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
-        TiledMapTileLayer itemBlocks = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("ItemBlocks");
+        TiledMapTileLayer collision = (TiledMapTileLayer) map.getLayers().get("Collision");
+        TiledMapTileLayer itemBlocks = (TiledMapTileLayer) map.getLayers().get("ItemBlocks");
 
         Debug.addCheckedBox(hitboxX, 0, .001f, 1000, Color.BLUE);
         if(directionRight) {
@@ -171,8 +176,8 @@ public class ObjectPhysics  {
         int left = (int) Math.floor(x);
         int right = (int) Math.floor(x + width - 0.00001f);
         int sideY = (int) Math.floor(hitboxY);
-        TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
-        TiledMapTileLayer itemBlocks = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("ItemBlocks");
+        TiledMapTileLayer collision = (TiledMapTileLayer) map.getLayers().get("Collision");
+        TiledMapTileLayer itemBlocks = (TiledMapTileLayer) map.getLayers().get("ItemBlocks");
 
         if(movingUp) {
             for (int posY = sideY; posY < sideY + moveY + 1; posY++) {

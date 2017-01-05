@@ -1,6 +1,7 @@
 package com.Luguan.Mroff.screen;
 
 import com.Luguan.Mroff.Mroff;
+import com.Luguan.Mroff.game.Game;
 import com.Luguan.Mroff.gui.DebugGUI;
 import com.Luguan.Mroff.livingentity.Item;
 import com.Luguan.Mroff.livingentity.Mushroom;
@@ -28,38 +29,38 @@ import java.util.List;
 /**
  * Created by Lukas on 6/9/2015.
  */
-public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMenuAction, ObjectPhysics.CollisionEvent {
-    public static final float TILE_SCALE = 1 / 16f;
-    private static final float CAMERA_ZOOM = .015f;
-    private final OrthographicCamera cam;
-    private final TiledMap level;
-    private final OrthogonalTiledMapRenderer renderer;
+public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMenuAction {
     private ScreenAdapter pauseMenu;
-    private Player character;
-    private List<Item> items;
-    private DebugGUI debugGUI = new DebugGUI();
-    private Vector2 cameraPosition = new Vector2();
+    private final Game game;
 
-    public GameScreen() {
-        level = Mroff.getInstance().getMap("Level2");
+    public GameScreen () {
+        game = new Game();
+    }
 
-        items = new ArrayList<Item>();
-        cam = new OrthographicCamera();
-        renderer = new OrthogonalTiledMapRenderer(Mroff.getInstance().getMap("Level2"), TILE_SCALE);
+    private boolean isPaused() {
+        return pauseMenu != null;
+    }
 
-        spawnCharacter();
+    @Override
+    public void render(float delta) {
+        update(delta);
 
-        debugGUI.setListener(new DebugGUI.OnAction() {
-            @Override
-            public void onKillAll() {
-                // TODO
-            }
+        game.render(delta);
 
-            @Override
-            public void onRestart() {
-                // TODO
-            }
-        });
+        if (pauseMenu != null) {
+            pauseMenu.render(delta);
+        }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        game.resize(width, height);
+    }
+
+
+    @Override
+    public void dispose() {
+        pauseMenu.dispose();
     }
 
     private void update(float delta) {
@@ -72,142 +73,15 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
             return;
         }
 
-        character.setFlying(debugGUI.isFlightModeEnabled());
-
-        character.update(delta);
-        for (Item item : items) {
-            item.update(delta);
-        }
+        game.update(delta);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             pauseMenu = new PauseMenuScreen(this);
             pauseMenu.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
 
-        moveCamera();
     }
 
-    private boolean isPaused() {
-        return pauseMenu != null;
-    }
-
-    private void moveCamera() {
-        cameraPosition = Utils.moveTowards(character.getPosition(), new Vector2(cameraPosition.x, cameraPosition.y));
-        cam.position.set(Utils.roundVector2(cameraPosition, CAMERA_ZOOM), 0);
-    }
-
-    private void spawnCharacter() {
-        character = new Player(this);
-        character.setPosition(15, 128 - 17);
-      /*  character = new Player(this);
-
-        MapLayers layers = level.getLayers();
-
-        for(MapLayer layer: layers) {
-
-            TiledMapTileLayer tileLayer = (TiledMapTileLayer)layer;
-
-            for (int y = 0; y < tileLayer.getHeight() - 1; y++) {
-                for (int x = 0; x < tileLayer.getWidth() - 1; x++) {
-                    TiledMapTileLayer.Cell cell = tileLayer.getCell(x, y);
-                    if (cell != null) {
-                        TiledMapTile tile = cell.getTile();
-
-                        if (tile.getProperties().containsKey("Start")) {
-                            character.setPosition((float) x, (float) y);
-                        }
-                    }
-                }
-            }
-        }
-
-        character.setPosition(5, 7);*/
-    }
-
-    @Override
-    public void render(float delta) {
-        update(delta);
-
-        Batch batch = renderer.getBatch();
-
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        cam.update();
-
-        renderer.setView(cam);
-        renderer.render();
-
-        batch.begin();
-        character.draw(batch);
-
-        for (Item item : items) {
-            item.draw(batch);
-        }
-
-        batch.end();
-
-        if (pauseMenu != null) {
-            pauseMenu.render(delta);
-        }
-
-        Debug.setEnabled(debugGUI.isPhysicsDebugEnabled());
-        if (debugGUI.isPhysicsDebugEnabled()) {
-            drawDebugOverlay();
-        }
-
-        debugGUI.draw();
-    }
-
-    private void drawDebugOverlay() {
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setAutoShapeType(true);
-        shapeRenderer.setProjectionMatrix(cam.combined);
-        shapeRenderer.begin();
-
-        for (Debug.Vector box : Debug.checkedBoxes) {
-            shapeRenderer.setColor(box.color);
-            shapeRenderer.rect(box.x, box.y, box.width, box.height);
-        }
-        TiledMapTileLayer collision = (TiledMapTileLayer)((GameScreen) Mroff.getInstance().getScreen()).getLevel().getLayers().get("Collision");
-
-        for (int x = 0; x < collision.getWidth(); x++) {
-            for (int y = 0; y < collision.getHeight(); y++) {
-                if (Player.intersects(new Rectangle(
-                        character.getPosition().x,
-                        character.getPosition().y,
-                        3/4f,
-                        1f
-                ), new Rectangle(x, y, 1, 1)).len() != 0) {
-                    shapeRenderer.setColor(Color.DARK_GRAY);
-                    shapeRenderer.rect(x, y, 1, 1);
-                }
-            }
-        }
-
-        shapeRenderer.setColor(Color.MAGENTA);
-        shapeRenderer.rect(character.getPosition().x,
-                character.getPosition().y,
-                character.getWidth(), character.getHeight());
-
-
-        Debug.checkedBoxes.clear();
-
-        shapeRenderer.end();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        float scale = CAMERA_ZOOM;
-        cam.viewportWidth = scale * width;
-        cam.viewportHeight = scale * height;
-        cam.update();
-    }
-
-    @Override
-    public void dispose() {
-        pauseMenu.dispose();
-    }
 
     @Override
     public void menuResume() {
@@ -215,22 +89,13 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
         pauseMenu = null;
     }
 
-    public TiledMap getLevel() {
-        return level;
-    }
 
     @Override
     public void menuReturnToMainMenu() {
         Mroff.getInstance().openMainMenu();
     }
 
-    @Override
-    public void onItemBlockCollision(int x, int y) {
-        System.out.println("coll");
-        items.add(new Mushroom(x, y));
-    }
-
-    public Player getCharacter() {
-        return character;
+    public Game getGame() {
+        return game;
     }
 }

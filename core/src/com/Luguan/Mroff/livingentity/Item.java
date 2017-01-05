@@ -1,5 +1,6 @@
 package com.Luguan.Mroff.livingentity;
 
+import com.Luguan.Mroff.game.Map;
 import com.Luguan.Mroff.physics.ObjectPhysics;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
@@ -9,12 +10,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 public class Item extends ObjectPhysics{
 
 
-    public Item() {
-
+    public Item(Map map) {
+        super(map);
     }
 
-    public Item(CollisionEvent event) {
-        super(event);
+    public Item(Map map, CollisionEvent event) {
+        super(map, event);
     }
 
 

@@ -1,5 +1,6 @@
 package com.Luguan.Mroff.livingentity;
 
+import com.Luguan.Mroff.game.Map;
 import com.Luguan.Mroff.physics.ObjectPhysics;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -13,8 +14,8 @@ public class LivingEntity extends ObjectPhysics{
     Sprite sprite;
 
 
-    public LivingEntity(Sprite character, CollisionEvent event) {
-        super(event);
+    public LivingEntity(Map map, Sprite character, CollisionEvent event) {
+        super(map, event);
         inAir = false;
         this.sprite = character;
         sprite = new Sprite(character);
