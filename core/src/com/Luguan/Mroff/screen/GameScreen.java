@@ -33,11 +33,12 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     private static final float CAMERA_ZOOM = .015f;
     private final OrthographicCamera cam;
     private final TiledMap level;
-    OrthogonalTiledMapRenderer renderer;
-    ScreenAdapter pauseMenu;
-    Player character;
-    List<Item> items;
-    DebugGUI debugGUI = new DebugGUI();
+    private final OrthogonalTiledMapRenderer renderer;
+    private ScreenAdapter pauseMenu;
+    private Player character;
+    private List<Item> items;
+    private DebugGUI debugGUI = new DebugGUI();
+    private Vector2 cameraPosition = new Vector2();
 
     public GameScreen() {
         level = Mroff.getInstance().getMap("Level2");
@@ -91,7 +92,8 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
     }
 
     private void moveCamera() {
-        cam.position.set(Utils.moveTowards(character.getPosition(), new Vector2(cam.position.x, cam.position.y)), 0);
+        cameraPosition = Utils.moveTowards(character.getPosition(), new Vector2(cameraPosition.x, cameraPosition.y));
+        cam.position.set(Utils.roundVector2(cameraPosition, CAMERA_ZOOM), 0);
     }
 
     private void spawnCharacter() {
@@ -154,10 +156,7 @@ public class GameScreen extends ScreenAdapter implements PauseMenuScreen.PauseMe
             drawDebugOverlay();
         }
 
-
-
         debugGUI.draw();
-
     }
 
     private void drawDebugOverlay() {

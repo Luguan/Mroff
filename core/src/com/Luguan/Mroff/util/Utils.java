@@ -10,4 +10,8 @@ public class Utils {
         Vector2 diff = target.sub(source);
         return source.add(diff.scl(0.8f));
     }
+
+    public static Vector2 roundVector2(Vector2 v, float mult) {
+        return new Vector2(Math.round(v.x / mult) * mult, Math.round(v.y / mult) * mult);
+    }
 }
